@@ -95,6 +95,7 @@ export class QInputEx extends Vue {
     return this.nativeType === 'select' ? 'QSelect' : 'QInput';
   }
 
+  // render helper functions:
   __getPopup(h: CreateElement, attach: InputAttach): VNode {
     const popupAttrs:any = {value: this.iValue};
     const vComp = this.getPopupComponent(attach.popup);
@@ -137,9 +138,9 @@ export class QInputEx extends Vue {
       if (attach.caption) attrs.label = attach.caption;
       if (attach.click) on.click = attach.click;
       if (attach.popup) {
-        result = h(QBtn, {attrs, on}, [this.__getPopup(h, attach)]);
+        result = h(QBtn, {props:attrs, on}, [this.__getPopup(h, attach)]);
       } else {
-        result = h(QBtn, {attrs, on});
+        result = h(QBtn, {props:attrs, on});
       }
     }
     return result;

@@ -1,4 +1,4 @@
 import './types';
 
-export * from './qinputex.vue';
+export * from './qinputex';
 export * from './consts';

@@ -16,7 +16,7 @@
 // import QInputEx from "../components/qinput_ex.vue";
 import { GRegisteredTypes } from "../components/qinputex";
 // import QInputEx from "../components/qinputex/qinputex.vue";
-import { QInputEx } from "../components/qinputex/qinputex1";
+import { QInputEx } from "../components/qinputex/qinputex";
 import { format } from 'date-fns'
 
 const InputType = Object.keys(GRegisteredTypes);
