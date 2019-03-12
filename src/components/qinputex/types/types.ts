@@ -4,7 +4,7 @@ register({
   name: 'email',
   type: 'email',
   attaches: {
-    prepend: {
+    before: {
       icon: 'email',
     }
   }
@@ -14,7 +14,7 @@ register({
   name: 'url',
   type: 'url',
   attaches: {
-    prepend: {
+    before: {
       icon: 'link',
     }
   }
@@ -24,7 +24,7 @@ register({
   name: 'tel',
   type: 'tel',
   attaches: {
-    prepend: {
+    before: {
       icon: 'phone',
     }
   }
