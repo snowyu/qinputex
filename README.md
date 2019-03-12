@@ -2,16 +2,45 @@
 
 The Quasar Advance Input Component iss used as single-line input box for date, time, password, color etc.
 
+
+## Usage
+
+You should enable these quasar components before used(`quasar.conf.js`):
+
+QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
+QInput, QSelect, QDate, QTime, QColor
+
+and the quasar directive: `close-dialog`.
+
+```ts
+import { QInputEx } from 'qinputex';
+import { Vue, Component, Prop, Mixins, Watch } from 'vue-property-decorator';
+import { VNode, CreateElement } from 'vue';
+
+@Component({
+  components: {
+    QInputEx,
+  }
+})
+export class MyApp extends Vue {
+  //<q-input-ex type="color" value="#ff0000"/>
+  render(h: CreateElement) {
+    return h(QInputEx, {props:{type: 'color', value: '#ff0000'}})
+  }
+}
+```
+
+## Create a new input type
+
 It can register other input types more easy. such as the date type for QDate:
 
 ```ts
-import { register, InputType } from 'qinputex';
-import QInputEx from 'qinputex';
+import { QInputEx, register, InputType } from 'qinputex';
 
-function padStr(value: number, size: number): string {
-    var s = String(value);
-    while (s.length < (size || 2)) {s = "0" + s;}
-    return s;
+function padStr(value: number, size: number = 2): string {
+  var s = String(value);
+  while (s.length < size) {s = "0" + s;}
+  return s;
 }
 
 function getCurrentYM() {
@@ -20,7 +49,7 @@ function getCurrentYM() {
   return result;
 }
 
-const DateInput: InputType = {
+export const DateInput: InputType = {
   name: 'date',
   type: 'text',
   mask: 'date',
@@ -39,7 +68,7 @@ const DateInput: InputType = {
   }
 }
 
-const PasswordInput: InputType = {
+const PasswordInput = {
   name: 'password',
   type: 'password',
   attaches: {
@@ -58,9 +87,7 @@ const PasswordInput: InputType = {
 }
 
 register(DateInput);
-
-
-
+register(PasswordInput);
 ```
 
 
