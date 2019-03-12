@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es6",
+    "strict": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
