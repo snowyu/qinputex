@@ -6,6 +6,8 @@
           q-icon(name="input" color="primary")
         q-item-section
           q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput")
+            template(v-slot:before)
+              q-btn(label="hi")
         q-item-section(side)
           q-btn(@click="doclick" label="next")
 </template>
