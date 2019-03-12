@@ -1,3 +1,43 @@
+/*
+高级文本输入框控件 The Advance Text QInputEx Component
+
+主要用于单行输入控件： 可在输入框前和输入框后增加图标和其它信息。
+增加位置是输入框前两个(before, prepend)，输入框后两个(append, after)
+这个称为挂件（attach）
+
+before/after: 在输入框外面， append/prepend: 在输入框里面。
+
+输入框可以定制 mask, 以及校验内容。
+
+目标：
+可以注册各种输入类型，动态改变输入类型，即可进行各种类型的输入。
+
+挂件（attach）:可以有文字，图标，可以点击或者popup.
+简单点，用btn作为挂件，图标文字都可以加上。抽象点，就是一个slot。
+
+AbstractInputAttach:
+
+* 如果是一个slot，那么就是nothing.
+
+InputAttach:
+
+* icon: string
+* caption: string
+* click: Function
+* popup: String|Object, the Component name to popup.
+  * name: the Component name to popup.
+  * the attributes to pass through into popup component.
+
+InputType:
+
+* name: register type name
+* type: org input type.
+* mask?:
+* rules?:
+* attaches:
+  * before,after, prepend/append: InputAttach
+*/
+
 import { Vue, Component, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { VNode, CreateElement } from 'vue';
 import { QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
@@ -105,10 +145,14 @@ export class QInputEx extends Vue {
     return h(QPopupProxy, [
       h(QCard, [
         h(QToolbar, [
-          h(QBtn, {attrs:{flat: true, round: true, icon: attach.icon}}),
+          h(QBtn, {props:{flat: true, round: true, icon: attach.icon}}),
           h(QToolbarTitle, this.$t('Please select', {type: this.$t(this.type)}) as string),
+          // h(QBtn, {
+          //   props:{flat: true, dense: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
+          //   directives: [{name: 'close-dialog'}]
+          // }),
           h(QBtn, {
-            attrs:{flat: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
+            props:{flat: true, round: true, color: "secondary", icon: 'close'},
             directives: [{name: 'close-dialog'}]
           }),
         ]),
@@ -134,9 +178,10 @@ export class QInputEx extends Vue {
     if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true}, attach.attrs);
       const on: any = {};
+      const vClick = attach.click;
       if (attach.icon) attrs.icon = attach.icon;
       if (attach.caption) attrs.label = attach.caption;
-      if (attach.click) on.click = attach.click;
+      if (vClick) on.click = ()=> vClick.apply(this, arguments);
       if (attach.popup) {
         result = h(QBtn, {props:attrs, on}, [this.__getPopup(h, attach)]);
       } else {
