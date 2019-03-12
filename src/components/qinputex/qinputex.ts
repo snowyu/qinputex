@@ -142,7 +142,9 @@ export class QInputEx extends Vue {
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs)
     }
-    return h(QPopupProxy, {props: {breakpoint: 600, type: 'dialog'}}, [
+    // type: 'dialog',
+    // breakpoint: 800, maxHeight: '99vh', cover: false
+    return h(QPopupProxy, {props: {maxHeight: '100vh', breakpoint: 800}}, [
       //, 'max-height':'480px'
       //{staticStyle: {'width': '100%', 'height': '800px'}},
       h(QCard, [
@@ -202,7 +204,7 @@ export class QInputEx extends Vue {
     const props = Object.assign({}, defaultAttrs, this.$attrs);
     const scopedSlots: any = {};
     const that = this;
-    Object.keys(this.attaches).forEach((name: any)=>{
+    InputAttachNames.forEach((name: any)=>{
       genAttach(name)
     })
 
@@ -223,10 +225,11 @@ export class QInputEx extends Vue {
 
     function genAttach(name: InputAttachName) {
       const vAttach = that.attaches[name];
-      if (vAttach) {
+      const vSlot: any = that.$scopedSlots[name];
+      if (vAttach || vSlot) {
         scopedSlots[name] = (props: any) => {
-          const result = [that.__getAttach(h, vAttach)];
-          const vSlot: any = that.$scopedSlots[name];
+          const result: any = [];
+          if (vAttach) result.push([that.__getAttach(h, vAttach)]);
           if (vSlot) result.push(vSlot(props));
           return result;
         }
