@@ -1,19 +1,25 @@
 <template lang="pug">
   q-page(class="flex flex-center")
-    q-avatar(size="128px" square)
-      img(alt="Quasar logo" src="~assets/quasar-logo-full.svg")
-      //- q-icon(name="email")
-    q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput")
-    q-btn(@click="doclick")
+    q-list
+      q-item
+        q-item-section(avatar)
+          q-icon(name="input" color="primary")
+        q-item-section
+          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput")
+        q-item-section(side)
+          q-btn(@click="doclick" label="next")
 </template>
 
 <style></style>
 
 <script>
-import QInputEx from "../components/qinput_ex.vue";
+// import QInputEx from "../components/qinput_ex.vue";
+import { GRegisteredTypes } from "../components/qinputex";
+// import QInputEx from "../components/qinputex/qinputex.vue";
+import { QInputEx } from "../components/qinputex/qinputex1";
 import { format } from 'date-fns'
-import { functionDeclaration } from 'babel-types';
-const InputType = ['password' , 'text' , 'textarea' , 'email' , 'search' , 'tel' , 'file' , 'number' , 'url' , 'select' , 'date' , 'time' , 'fulltime' , 'color'];
+
+const InputType = Object.keys(GRegisteredTypes);
 let curr = 0;
 
 export default {

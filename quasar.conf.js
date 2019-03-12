@@ -53,6 +53,7 @@ module.exports = function (ctx) {
         'QCardActions',
         'QColor',
         'QAvatar',
+        'QBanner',
       ],
 
       directives: [
