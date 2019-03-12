@@ -203,7 +203,7 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     const that = this;
     Object.keys(this.attaches).forEach((name: any)=>{
-      getAttach(name)
+      genAttach(name)
     })
 
     return h(vComp, {
@@ -221,7 +221,7 @@ export class QInputEx extends Vue {
       scopedSlots,
     });
 
-    function getAttach(name: InputAttachName) {
+    function genAttach(name: InputAttachName) {
       const vAttach = that.attaches[name];
       if (vAttach) {
         scopedSlots[name] = (props: any) => {
