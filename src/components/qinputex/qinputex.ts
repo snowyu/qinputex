@@ -137,12 +137,14 @@ export class QInputEx extends Vue {
 
   // render helper functions:
   __getPopup(h: CreateElement, attach: InputAttach): VNode {
-    const popupAttrs:any = {value: this.iValue};
+    const popupAttrs:any = {value: this.iValue, filled: true};
     const vComp = this.getPopupComponent(attach.popup);
-    if (typeof attach.popup !== 'string') {
+    if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs)
     }
-    return h(QPopupProxy, [
+    return h(QPopupProxy, {props: {breakpoint: 600, type: 'dialog'}}, [
+      //, 'max-height':'480px'
+      //{staticStyle: {'width': '100%', 'height': '800px'}},
       h(QCard, [
         h(QToolbar, [
           h(QBtn, {props:{flat: true, round: true, icon: attach.icon}}),
