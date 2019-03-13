@@ -83,8 +83,12 @@ export class QInputEx extends Vue {
 
 
   created() {
-    this.iValue = this.value;
     this.typeChanged(this.type);
+  }
+
+  @Watch('value')
+  valueChanged(value: any) {
+    this.iValue = value;
   }
 
   @Watch('iValue')
@@ -202,6 +206,31 @@ export class QInputEx extends Vue {
     return result;
   }
 
+  focus() {
+    this.inputBox.focus();
+  }
+
+  get selectionStart() {
+    return this.inputBox.selectionStart;
+  }
+
+  set selectionStart(value) {
+    this.inputBox.selectionStart = value;
+  }
+
+  get selectionEnd() {
+    return this.inputBox.selectionEnd;
+  }
+
+  set selectionEnd(value) {
+    this.inputBox.selectionEnd = value;
+  }
+
+  get inputBox() {
+    const inputBox: any = this.$refs.inputBox;
+    return inputBox.$refs.input || inputBox.$refs.target;
+  }
+
   render(h: CreateElement): VNode {
     const defaultAttrs = {
       filled: true, mask: this.mask, rules: this.rules, type: this.nativeType,
@@ -220,6 +249,7 @@ export class QInputEx extends Vue {
       ref: 'inputBox',
       props,
       on: {
+        ...this.$listeners,
         input: (value: any)=> {
           if (typeof onInput === 'function') {
             onInput.call(that, value)
