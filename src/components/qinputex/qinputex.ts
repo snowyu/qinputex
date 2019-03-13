@@ -185,7 +185,7 @@ export class QInputEx extends Vue {
       const vClick = attach.click;
       if (attach.icon) attrs.icon = attach.icon;
       if (attach.caption) attrs.label = attach.caption;
-      if (vClick) on.click = ()=> vClick.apply(this, arguments);
+      if (vClick) on.click = (e: MouseEvent)=> vClick.call(this, e);
       if (attach.popup) {
         result = h(QBtn, {props:attrs, on}, [this.__getPopup(h, attach)]);
       } else {
