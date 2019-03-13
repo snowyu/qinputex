@@ -210,22 +210,6 @@ export class QInputEx extends Vue {
     this.inputBox.focus();
   }
 
-  get selectionStart() {
-    return this.inputBox.selectionStart;
-  }
-
-  set selectionStart(value) {
-    this.inputBox.selectionStart = value;
-  }
-
-  get selectionEnd() {
-    return this.inputBox.selectionEnd;
-  }
-
-  set selectionEnd(value) {
-    this.inputBox.selectionEnd = value;
-  }
-
   get inputBox() {
     const inputBox: any = this.$refs.inputBox;
     return inputBox.$refs.input || inputBox.$refs.target;
