@@ -2,15 +2,12 @@
   q-page(class="flex flex-center")
     q-list
       q-item
-        q-item-section {{type}}:
-
-      q-item
         q-item-section(avatar)
           q-icon(name="input" color="primary")
         q-item-section
           q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" with-seconds)
             template(v-slot:before)
-              q-btn(label="hi")
+              q-btn(:label="type")
             template(v-slot:append)
               q-btn(label="append")
         q-item-section(side)
