@@ -2,12 +2,17 @@
   q-page(class="flex flex-center")
     q-list
       q-item
+        q-item-section {{type}}:
+
+      q-item
         q-item-section(avatar)
           q-icon(name="input" color="primary")
         q-item-section
-          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput")
+          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" with-seconds)
             template(v-slot:before)
               q-btn(label="hi")
+            template(v-slot:append)
+              q-btn(label="append")
         q-item-section(side)
           q-btn(@click="doclick" label="next")
 </template>
@@ -30,9 +35,11 @@ export default {
   },
   data: () => {
     return {
-      type: 'color',
+      type: 'datetime',
       myValue: ''//format(new Date, 'yyyy/MM/dd')
     }
+  },
+  computed: {
   },
   methods: {
     onInput: (v)=>{
