@@ -5,13 +5,23 @@
 
 import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
 import { mountQuasar } from '~/test/jest/utils'
-import QBUTTON from './demo/QBtn-demo.vue'
-import {Quasar, QBtn } from 'quasar'
+import { QInputEx } from '~/src/components/qinputex'
+import QINPUTEX from './demo/QInputEx-demo.vue'
+import {
+  Quasar, QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
+  QInput, QSelect, QDate, QTime, QColor
+} from 'quasar';
 
 describe('Mount Quasar', () => {
   const localVue = createLocalVue()
-  localVue.use(Quasar, { components: { QBtn }})
-  const wrapper = mount(QBUTTON, {
+  localVue.use(Quasar, {
+    components: {
+      QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
+      QInput, QSelect, QDate, QTime, QColor,
+      QInputEx,
+    }
+  })
+  const wrapper = mount(QINPUTEX, {
     localVue
   })
   const vm = wrapper.vm
@@ -25,9 +35,11 @@ describe('Mount Quasar', () => {
   })
 
   it('accesses the shallowMount', () => {
-    expect(vm.$el.textContent).toContain('rocket muffin')
-    expect(wrapper.text()).toContain('rocket muffin') // easier
-    expect(wrapper.find('p').text()).toContain('rocket muffin')
+    const ref = wrapper.find({ ref: 'i' })
+    expect(ref.is(QInputEx).toBe(true));
+    // expect(vm.$el.textContent).toContain('rocket muffin')
+    // expect(wrapper.text()).toContain('rocket muffin') // easier
+    // expect(wrapper.find('p').text()).toContain('rocket muffin')
   })
 
   it('sets the correct default data', () => {
@@ -37,7 +49,7 @@ describe('Mount Quasar', () => {
   })
 
   it('correctly updates data when button is pressed', () => {
-    const button = wrapper.find('button')
+    const button = wrapper.find('#mybutton')
     button.trigger('click')
     expect(vm.counter).toBe(1)
   })

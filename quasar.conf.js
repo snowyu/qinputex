@@ -1,4 +1,36 @@
 // Configuration for your app
+
+// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// const TSCONFIG = __dirname + '/tsconfig.build.json';
+// 我用这个ForkTsCheckerWebpackPlugin是因为可以增加nodejs的使用内存，避免堆栈溢出。
+// 当然它的另外优点是分线程同时处理tslint和compile.
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const useForkTsChecker = true
+
+function extendTypescriptToWebpack(cfg) {
+  // cfg.resolve.plugins = [
+  //   // ts paths mapper for webpack
+  //   new TsconfigPathsPlugin({ configFile: TSCONFIG })
+  // ]
+  // added the type-script supports
+  cfg.resolve.extensions.push('.ts')
+  cfg.module.rules.push({
+    test: /\.tsx?$/,
+    loader: 'ts-loader',
+    options: {
+      // configFile: TSCONFIG,
+      appendTsSuffixTo: [/\.vue$/],
+      onlyCompileBundledFiles: !useForkTsChecker,
+      // Type checking is handled by fork-ts-checker-webpack-plugin
+      transpileOnly: useForkTsChecker,
+  }
+  })
+  cfg.plugins.push(new ForkTsCheckerWebpackPlugin({
+    // tslint: true,
+    vue: true
+  }))
+}
+
 function extendPugToWebpack(cfg) {
   cfg.module.rules.push({
     test: /\.pug$/,
@@ -80,6 +112,7 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
+        extendTypescriptToWebpack(cfg)
         extendPugToWebpack(cfg)
         // cfg.module.rules.push({
         //   enforce: 'pre',

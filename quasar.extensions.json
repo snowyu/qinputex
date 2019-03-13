@@ -1,15 +1,4 @@
 {
-  "@quasar/typescript": {
-    "webpack": "plugin",
-    "rename": false
-  },
-  "@quasar/testing-unit-jest": {
-    "babel": "babelrc",
-    "options": [
-      "SFC",
-      "scripts"
-    ]
-  },
   "@quasar/testing-e2e-cypress": {
     "options": [
       "scripts"
@@ -27,7 +16,6 @@
   },
   "@quasar/testing": {
     "harnesses": [
-      "unit-jest",
       "e2e-cypress",
       "quality",
       "security"

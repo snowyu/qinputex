@@ -1,17 +1,30 @@
 module.exports = {
   globals: {
-    __DEV__: true
+    __DEV__: true,
+    "vue-jest": {
+      // "babelConfig": ".babelrc",
+      "tsConfig": __dirname + "/tsconfig.jest.json"
+    },
+    "ts-jest": {
+      // "useBabelrc": true,
+      "diagnostics": true,
+      // "skipBabel": true,
+      "tsConfig": "tsconfig.jest.json"
+    }
   },
+  // 'testEnvironment': 'jsdom-with-canvas',
   setupFilesAfterEnv: [
-    '<rootDir>/test/jest/jest.setup.js'
+    // 'jest-extended',
+    '<rootDir>/jest.setup.js'
   ],
   noStackTrace: true,
   bail: true,
   cache: false,
   verbose: true,
   collectCoverage: false,
-  coverageDirectory: '<rootDir>/test/jest/coverage',
+  // coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
+    '!<rootDir>/src/(assets|environment|types|router|boot|i18n)/**',
     '<rootDir>/src/**/*.vue',
     '<rootDir>/src/**/*.js',
     '<rootDir>/src/**/*.ts',
@@ -25,10 +38,15 @@ module.exports = {
     //  statements: 50
     }
   },
+  // "testRegex": "src/.*(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   testMatch: [
-    '<rootDir>/test/jest/__tests__/**/*.spec.js',
-    '<rootDir>/test/jest/__tests__/**/*.test.js',
-    '<rootDir>/src/**/__tests__/*_jest.spec.js'
+    // '<rootDir>/test/jest/__tests__/**/*.spec.js',
+    // '<rootDir>/test/jest/__tests__/**/*.test.js',
+    '<rootDir>/src/**/__tests__/*_jest.spec.(t|j)s',
+    '<rootDir>/src/**/*.(spec|test).(t|j)s',
+    // '<rootDir>/src/**/__tests__/*_jest.spec.ts',
+    '<rootDir>/test/jest/__tests__/**/*.(spec|test).(t|j)s',
+    // '<rootDir>/test/jest/__tests__/**/*.test.js',
   ],
   moduleFileExtensions: [
     'vue',
@@ -39,20 +57,26 @@ module.exports = {
     'tsx'
   ],
   moduleNameMapper: {
+    "^@env/?(.*)$": "<rootDir>/src/environment/$1",
+    "^@libs/(.*)$":  "<rootDir>/src/libs/$1",
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
     '^test-utils$': '<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.js',
-    '^quasar$': '<rootDir>/node_modules/quasar/dist/quasar.common.js',
+    '^quasar$': '<rootDir>/node_modules/quasar/dist/quasar.umd.js',
     '^~/(.*)$': '<rootDir>/$1',
-    '^src/(.*)$': '<rootDir>/src/$1',
-    '.*css$': '<rootDir>/test/jest/utils/stub.css'
+    // '^src/(.*)$': '<rootDir>/src/$1',
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/jest/utils/fileMock.js",
+   "\\.(css|less|sass|stylus)$": "identity-obj-proxy",
   },
   transform: {
-    '.*\\.vue$': 'vue-jest',
-    '.*\\.js$': 'babel-jest'
-    // use these if NPM is being flaky
-    // '.*\\.vue$': '<rootDir>/node_modules/@quasar/quasar-app-extension-testing-unit-jest/node_modules/vue-jest',
-    // '.*\\.js$': '<rootDir>/node_modules/@quasar/quasar-app-extension-testing-unit-jest/node_modules/babel-jest'
+    "^.+\\.tsx?$": "ts-jest",
+    '.*\\.vue$': '<rootDir>/node_modules/vue-jest',
+    '.*\\.jsx?$': '<rootDir>/node_modules/babel-jest',
+    // "\\.(gql|graphql)$": "jest-transform-graphql",
   },
+  transformIgnorePatterns: [
+    // '/node_modules/(?!@ionic-native).+\\.js$',
+    "<rootDir>/node_modules/(?!@ngrx|@ionic-native|@ionic)", //only transform ionic packages.
+  ],
   snapshotSerializers: [
     '<rootDir>/node_modules/jest-serializer-vue'
   ]
