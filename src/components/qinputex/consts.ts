@@ -1,7 +1,8 @@
 export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' | 'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
 export interface InputPopupObject {
-  name: string;
+  name: string; // the Component name to popup
+  caption?: string;
   attrs?: any;
 }
 
@@ -19,10 +20,10 @@ export type InputAttachName = 'before' | 'after' | 'prepend' | 'append';
 export const InputAttachNames = ['before' , 'after' , 'prepend' , 'append'];
 
 export interface InputAttaches {
-  before?: InputAttach;
-  after?: InputAttach;
-  prepend?: InputAttach;
-  append?: InputAttach;
+  before?: InputAttach|InputAttach[];
+  after?: InputAttach|InputAttach[];
+  prepend?: InputAttach|InputAttach[];
+  append?: InputAttach|InputAttach[];
 }
 
 export interface InputType {

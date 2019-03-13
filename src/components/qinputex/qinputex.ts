@@ -111,7 +111,11 @@ export class QInputEx extends Vue {
     if (aType.attaches)
       Object.keys(aType.attaches).forEach((attachName)=>{
         const src: any = aType.attaches;
-        vAttaches[attachName] = Object.assign({}, src[attachName]);
+        if (Array.isArray(src[attachName])) {
+          vAttaches[attachName] = src[attachName].map((item:any)=>Object.assign({}, item));
+        } else {
+          vAttaches[attachName] = Object.assign({}, src[attachName]);
+        }
       })
   }
 
@@ -137,11 +141,12 @@ export class QInputEx extends Vue {
 
   // render helper functions:
   __getPopup(h: CreateElement, attach: InputAttach): VNode {
-    const popupAttrs:any = {value: this.iValue, filled: true};
+    const popupAttrs:any = Object.assign({value: this.iValue, filled: true}, this.$attrs);
     const vComp = this.getPopupComponent(attach.popup);
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs)
     }
+    const vCaption = (attach.popup as any).caption || this.type;
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
     return h(QPopupProxy, {props: {maxHeight: '100vh', breakpoint: 800}}, [
@@ -150,7 +155,7 @@ export class QInputEx extends Vue {
       h(QCard, [
         h(QToolbar, [
           h(QBtn, {props:{flat: true, round: true, icon: attach.icon}}),
-          h(QToolbarTitle, this.$t('Please select', {type: this.$t(this.type)}) as string),
+          h(QToolbarTitle, this.$t('Please select', {type: this.$t(vCaption)}) as string),
           // h(QBtn, {
           //   props:{flat: true, dense: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
           //   directives: [{name: 'close-dialog'}]
@@ -180,7 +185,7 @@ export class QInputEx extends Vue {
   __getAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
     if (attach.icon || attach.caption) {
-      const attrs = Object.assign({flat: true}, attach.attrs);
+      const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
       const on: any = {};
       const vClick = attach.click;
       if (attach.icon) attrs.icon = attach.icon;
@@ -224,12 +229,18 @@ export class QInputEx extends Vue {
     });
 
     function genAttach(name: InputAttachName) {
-      const vAttach = that.attaches[name];
+      let vAttach: any = that.attaches[name];
       const vSlot: any = that.$scopedSlots[name];
       if (vAttach || vSlot) {
         scopedSlots[name] = (props: any) => {
           const result: any = [];
-          if (vAttach) result.push([that.__getAttach(h, vAttach)]);
+          if (vAttach) {
+            if (!Array.isArray(vAttach)) vAttach = [vAttach];
+            // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
+            vAttach.forEach((item: InputAttach) => {
+              result.push(that.__getAttach(h, item));
+            });
+          }
           if (vSlot) result.push(vSlot(props));
           return result;
         }
