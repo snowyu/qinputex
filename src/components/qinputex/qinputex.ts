@@ -251,6 +251,7 @@ export class QInputEx extends Vue {
       if (vAttach || vSlot) {
         scopedSlots[name] = (props: any) => {
           const result: any = [];
+          if (vSlot) result.push(vSlot(props));
           if (vAttach) {
             if (!Array.isArray(vAttach)) vAttach = [vAttach];
             // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
@@ -258,7 +259,6 @@ export class QInputEx extends Vue {
               result.push(that.__getAttach(h, item));
             });
           }
-          if (vSlot) result.push(vSlot(props));
           return result;
         }
       }
