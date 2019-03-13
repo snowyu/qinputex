@@ -75,6 +75,7 @@ export class QInputEx extends Vue {
   // @Prop() rules!: null|[string];
 
   iValue : null|string = null;
+  iType: null|InputType = null;
   attaches: InputAttaches = {};
   nativeType: string = 'text';
   mask: string = '';
@@ -94,6 +95,7 @@ export class QInputEx extends Vue {
   clearType() {
     this.iValue = '';
     this.mask = '';
+    this.iType = null;
     this.rules = null;
     this.nativeType = 'text';
     this.attaches = {};
@@ -104,6 +106,7 @@ export class QInputEx extends Vue {
   }
 
   cloneType(aType: InputType) {
+    this.iType = aType;
     if (aType.mask) this.mask = aType.mask;
     if (aType.rules) this.rules = aType.rules;
     this.nativeType = aType.type;
@@ -127,10 +130,6 @@ export class QInputEx extends Vue {
     this.cloneType(vInputType);
   }
 
-  onInput(value: string) {
-    this.iValue = value;
-  }
-
   getPopupComponent(popup?: InputPopup) {
     return (typeof popup === 'object') ? popup.name : popup;
   }
@@ -141,12 +140,15 @@ export class QInputEx extends Vue {
 
   // render helper functions:
   __getPopup(h: CreateElement, attach: InputAttach): VNode {
-    const popupAttrs:any = Object.assign({value: this.iValue, filled: true}, this.$attrs);
+    const toValue = (attach.popup as any).toValue;
+    const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
+    const popupAttrs:any = Object.assign({value: vValue, filled: true}, this.$attrs);
     const vComp = this.getPopupComponent(attach.popup);
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs)
     }
     const vCaption = (attach.popup as any).caption || this.type;
+    const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
     return h(QPopupProxy, {props: {maxHeight: '100vh', breakpoint: 800}}, [
@@ -169,11 +171,11 @@ export class QInputEx extends Vue {
           h(vComp, {
             props: popupAttrs,
             on: {
-              input: (e:any)=> {
-                if (typeof e === 'object' && e.target) {
-                  this.iValue = e.target.value;
+              input: (value:any)=> {
+                if (typeof onInput === 'function') {
+                  onInput.call(this, value);
                 } else {
-                  this.iValue = e;
+                  this.iValue = value;
                 }
               }
             }
@@ -209,6 +211,7 @@ export class QInputEx extends Vue {
     const props = Object.assign({}, defaultAttrs, this.$attrs);
     const scopedSlots: any = {};
     const that = this;
+    const onInput = this.iType!['@input'];
     InputAttachNames.forEach((name: any)=>{
       genAttach(name)
     })
@@ -217,11 +220,11 @@ export class QInputEx extends Vue {
       ref: 'inputBox',
       props,
       on: {
-        input: (e: any)=> {
-          if (typeof e === 'object' && e.target) {
-            this.iValue = e.target.value;
+        input: (value: any)=> {
+          if (typeof onInput === 'function') {
+            onInput.call(that, value)
           } else {
-            this.iValue = e;
+            this.iValue = value;
           }
         },
       },

@@ -4,6 +4,8 @@ export interface InputPopupObject {
   name: string; // the Component name to popup
   caption?: string;
   attrs?: any;
+  '@input'?: Function;
+  'toValue'?: Function;
 }
 
 export type InputPopup = string|InputPopupObject;
@@ -33,6 +35,7 @@ export interface InputType {
   mask?: string;
   rules?: [string|Function];
   attaches?: InputAttaches;
+  '@input'?: Function;
 }
 
 export const GRegisteredTypes: {[name: string]: InputType}  = {}
