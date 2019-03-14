@@ -103,9 +103,14 @@ export class QInputEx extends Vue {
     this.rules = null;
     this.nativeType = 'text';
     this.attaches = {};
+    this.resetValidation();
+  }
+
+  resetValidation() {
     const vInput: any = this.$refs.inputBox;
     if ( vInput && vInput.resetValidation) {
-      vInput.resetValidation();
+      this.$nextTick(()=>vInput.resetValidation());
+      // vInput.resetValidation();
     }
   }
 
@@ -115,7 +120,7 @@ export class QInputEx extends Vue {
     if (aType.rules) this.rules = aType.rules;
     this.nativeType = aType.type;
     const vAttaches: any = this.attaches;
-    if (aType.attaches)
+    if (aType.attaches) {
       Object.keys(aType.attaches).forEach((attachName)=>{
         const src: any = aType.attaches;
         if (Array.isArray(src[attachName])) {
@@ -124,6 +129,8 @@ export class QInputEx extends Vue {
           vAttaches[attachName] = Object.assign({}, src[attachName]);
         }
       })
+    }
+    this.resetValidation();
   }
 
   @Watch('type')
@@ -140,6 +147,15 @@ export class QInputEx extends Vue {
 
   getComponent() {
     return this.nativeType === 'select' ? 'QSelect' : 'QInput';
+  }
+
+  focus() {
+    this.inputBox.focus();
+  }
+
+  get inputBox() {
+    const inputBox: any = this.$refs.inputBox;
+    return inputBox.$refs.input || inputBox.$refs.target;
   }
 
   // render helper functions:
@@ -204,15 +220,6 @@ export class QInputEx extends Vue {
       }
     }
     return result;
-  }
-
-  focus() {
-    this.inputBox.focus();
-  }
-
-  get inputBox() {
-    const inputBox: any = this.$refs.inputBox;
-    return inputBox.$refs.input || inputBox.$refs.target;
   }
 
   render(h: CreateElement): VNode {
