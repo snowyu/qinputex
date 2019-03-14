@@ -2,12 +2,12 @@
   q-page(class="flex flex-center")
     q-list
       q-item
-        q-item-section(avatar)
-          q-icon(name="input" color="primary")
+        //- q-item-section(avatar)
+        //-   q-icon(name="input" color="primary")
         q-item-section
-          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" with-seconds)
+          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" :with-seconds='type==="datetime"')
             template(v-slot:before)
-              q-btn(:label="type")
+              q-btn(flat :label='`${type}:`')
             template(v-slot:append)
               q-btn(label="append")
         q-item-section(side)
@@ -26,13 +26,15 @@ import { format } from 'date-fns'
 const InputType = Object.keys(GRegisteredTypes);
 let curr = 0;
 
+console.log(InputType);
+
 export default {
   components: {
     QInputEx,
   },
   data: () => {
     return {
-      type: 'datetime',
+      type: InputType[0],
       myValue: ''//format(new Date, 'yyyy/MM/dd')
     }
   },
@@ -43,6 +45,7 @@ export default {
       console.log('qExt',v)
     },
     doclick: function() {
+      this.myValue = '';
       this.type = InputType[curr];
       curr++;
       if (curr >= InputType.length) curr = 0;

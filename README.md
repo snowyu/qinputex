@@ -2,6 +2,7 @@
 
 The Quasar Advance Input Component iss used as single-line input box for date, time, password, color etc.
 
+![](./doc/qinputex.gif)
 
 ## Usage
 
@@ -10,7 +11,7 @@ You should enable these quasar components before used(`quasar.conf.js`):
 QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
 QInput, QSelect, QDate, QTime, QColor
 
-and the quasar directive: `close-dialog`.
+and the quasar directive: `close-dialog` with `vue-i18n`.
 
 ```ts
 import { QInputEx } from 'qinputex';
