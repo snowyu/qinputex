@@ -82,5 +82,9 @@
   "resolutions": {
     "ajv": "6.8.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "src",
+    "dist"
+  ]
 }
