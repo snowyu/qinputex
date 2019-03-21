@@ -4,7 +4,17 @@
   "description": "An Advance QInput",
   "productName": "QInputEx",
   "author": "Riceball LEE <snowyu.lee@gmail.com>",
+  "main": "dist/umd/qinputex.js",
+  "module": "dist/esm/components/qinputex/index.js",
+  "es2015": "dist/es2015/components/qinputex/index.js",
+  "unpkg": "dist/umd/qinputex.min.js",
   "scripts": {
+    "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
+    "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015",
+    "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "build:umd": "rollup -c",
+    "build:umd:min": "cd dist/umd && uglifyjs --compress --source-map --mangle --screw-ie8 --comments -o qinputex.min.js -- qinputex.js && gzip qinputex.min.js -c > qinputex.min.js.gz",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "test:unit": "jest --updateSnapshot",
@@ -22,13 +32,15 @@
     "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
   },
   "dependencies": {
-    "@quasar/extras": "^1.1.0",
-    "date-fns": "2.0.0-alpha.27",
-    "quasar": "^1.0.0-beta.9",
-    "vue-i18n": "^8.9.0"
+  },
+  "peerDependencies": {
+    "quasar": ">=1",
+    "vue": ">=2",
+    "vue-i18n": ">=8.9.0"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0-beta.10",
+    "@quasar/extras": "^1.1.0",
     "@quasar/quasar-app-extension-testing": "^1.0.0-beta.7",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^1.0.0-beta.5",
     "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.5",
@@ -36,17 +48,27 @@
     "@types/node": "11.9.5",
     "@vue/eslint-config-prettier": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "date-fns": "2.0.0-alpha.27",
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
+    "quasar": "^1.0.0-beta.11",
+    "rollup": "^1.7.0",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-ignore": "^1.0.5",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-typescript2": "^0.20.1",
     "strip-ansi": "=3.0.1",
     "ts-jest": "^24.0.0",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
+    "uglify-js": "^3.5.0",
     "vue-class-component": "^7.0.1",
+    "vue-i18n": "^8.9.0",
     "vue-property-decorator": "^8.0.0"
   },
   "engines": {
@@ -59,5 +81,6 @@
   ],
   "resolutions": {
     "ajv": "6.8.1"
-  }
+  },
+  "license": "MIT"
 }
