@@ -1,6 +1,7 @@
 .quasar
 .DS_Store
 .thumbs.db
+.rpt2_cache
 node_modules
 /test/jest/coverage
 /dist
