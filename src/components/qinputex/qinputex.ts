@@ -40,7 +40,7 @@ InputType:
 
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { VNode, CreateElement } from 'vue';
-import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
+// import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 
 import {
   InputPopup, InputAttach, InputAttaches, InputType,
@@ -171,23 +171,23 @@ export class QInputEx extends Vue {
     const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
-    return h(QPopupProxy, {props: {maxHeight: '100vh', breakpoint: 800}}, [
+    return h('QPopupProxy', {props: {maxHeight: '100vh', breakpoint: 800}}, [
       //, 'max-height':'480px'
       //{staticStyle: {'width': '100%', 'height': '800px'}},
-      h(QCard, [
-        h(QToolbar, [
-          h(QBtn, {props:{flat: true, round: true, icon: attach.icon}}),
-          h(QToolbarTitle, this.$t('Please select', {type: this.$t(vCaption)}) as string),
+      h('QCard', [
+        h('QToolbar', [
+          h('QBtn', {props:{flat: true, round: true, icon: attach.icon}}),
+          h('QToolbarTitle', this.$t('Please select', {type: this.$t(vCaption)}) as string),
           // h(QBtn, {
           //   props:{flat: true, dense: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
           //   directives: [{name: 'close-dialog'}]
           // }),
-          h(QBtn, {
+          h('QBtn', {
             props:{flat: true, round: true, color: "secondary", icon: 'close'},
             directives: [{name: 'close-dialog'}]
           }),
         ]),
-        h(QCardSection, [
+        h('QCardSection', [
           h(vComp, {
             props: popupAttrs,
             on: {
@@ -214,9 +214,9 @@ export class QInputEx extends Vue {
       if (attach.caption) attrs.label = attach.caption;
       if (vClick) on.click = (e: MouseEvent)=> vClick.call(this, e);
       if (attach.popup) {
-        result = h(QBtn, {props:attrs, on}, [this.__getPopup(h, attach)]);
+        result = h('QBtn', {props:attrs, on}, [this.__getPopup(h, attach)]);
       } else {
-        result = h(QBtn, {props:attrs, on});
+        result = h('QBtn', {props:attrs, on});
       }
     }
     return result;
