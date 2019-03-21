@@ -38,14 +38,14 @@ InputType:
   * before,after, prepend/append: InputAttach
 */
 
-import { Vue, Component, Prop, Mixins, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { VNode, CreateElement } from 'vue';
-import { QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
+import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 
 import {
-  NativeInputType, InputPopupObject, InputPopup, InputAttach, InputAttaches, InputType,
+  InputPopup, InputAttach, InputAttaches, InputType,
   InputAttachName, InputAttachNames,
-  GRegisteredTypes, register, unregister
+  GRegisteredTypes, register,
 } from './consts';
 
 register({name: 'text', type: 'text'});
