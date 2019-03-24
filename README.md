@@ -11,7 +11,7 @@ You should enable these quasar components before used(`quasar.conf.js`):
 QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
 QInput, QSelect, QDate, QTime, QColor
 
-and the quasar directive: `close-dialog` with `vue-i18n`.
+The quasar directive: `close-dialog`  and the `vue-i18n` plugin.
 
 There are four slots as the same as the `QInput` component:
 
