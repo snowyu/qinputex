@@ -1,6 +1,6 @@
-# Quasar Advance Input Component
+# The Advance Input Component for Quasar@v1
 
-The Quasar Advance Input Component iss used as single-line input box for date, time, password, color etc.
+The Advance Input Component for Quasar is used as single-line input box for date, time, password, color, selete etc.
 
 ![](./doc/qinputex.gif)
 
@@ -12,6 +12,21 @@ QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
 QInput, QSelect, QDate, QTime, QColor
 
 and the quasar directive: `close-dialog` with `vue-i18n`.
+
+There are four slots as the same as the `QInput` component:
+
+* before
+* prepend
+* append
+* after
+
+The `qinputex/dist/` is output for `es2015`, `esm`, `umd`, `cjs`.
+
+`require('qinputex/dist/es2015/')` will register all input types to `QInputEx`
+
+`require('qinputex/dist/es2015/components/qinputex/qinputex')` will only register the basic input types(text, textarea, number) to `QInputEx`.
+
+### Demo
 
 ```ts
 import { QInputEx } from 'qinputex';
