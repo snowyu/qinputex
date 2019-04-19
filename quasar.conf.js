@@ -1,7 +1,7 @@
 // Configuration for your app
 
 // const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-// const TSCONFIG = __dirname + '/tsconfig.build.json';
+// const TSCONFIG = __dirname + '/tsconfig.json';
 // 我用这个ForkTsCheckerWebpackPlugin是因为可以增加nodejs的使用内存，避免堆栈溢出。
 // 当然它的另外优点是分线程同时处理tslint和compile.
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
@@ -14,16 +14,37 @@ function extendTypescriptToWebpack(cfg) {
   // ]
   // added the type-script supports
   cfg.resolve.extensions.push('.ts')
+  cfg.resolve.extensions.push('.tsx')
   cfg.module.rules.push({
-    test: /\.tsx?$/,
+    test: /\.ts$/,
     loader: 'ts-loader',
+    exclude: /node_modules/,
     options: {
+      // tsconfig: TSCONFIG,
       // configFile: TSCONFIG,
       appendTsSuffixTo: [/\.vue$/],
       onlyCompileBundledFiles: !useForkTsChecker,
       // Type checking is handled by fork-ts-checker-webpack-plugin
       transpileOnly: useForkTsChecker,
   }
+  })
+  cfg.module.rules.push({
+    test: /\.tsx$/,
+    exclude: /node_modules/,
+    use: [
+      'babel-loader',
+      {
+        loader: 'ts-loader',
+        options: {
+        // tsconfig: TSCONFIG,
+        // configFile: TSCONFIG,
+        appendTsSuffixTo: [/\.vue$/],
+        onlyCompileBundledFiles: !useForkTsChecker,
+        // Type checking is handled by fork-ts-checker-webpack-plugin
+        transpileOnly: useForkTsChecker,
+        }
+      }
+    ]
   })
   cfg.plugins.push(new ForkTsCheckerWebpackPlugin({
     // tslint: true,
@@ -90,7 +111,7 @@ module.exports = function (ctx) {
 
       directives: [
         'Ripple',
-        'CloseDialog',
+        'ClosePopup',
       ],
 
       // Quasar plugins
