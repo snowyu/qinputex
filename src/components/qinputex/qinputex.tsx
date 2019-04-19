@@ -181,7 +181,6 @@ export class QInputEx extends Vue {
     const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
-    // 好了，卡在这里了目前不支持。
     return (
       <QPopupProxy maxHeight='100vh' breakpoint={800}>
         <QCard>
