@@ -184,7 +184,7 @@ export class QInputEx extends Vue {
     // 好了，卡在这里了目前不支持。
     return (
       <QPopupProxy maxHeight='100vh' breakpoint={800}>
-        <QCard onClick="tst" onInput="xxxx">
+        <QCard>
           <QToolbar>
             <QBtn flat={true} round={true} icon={attach.icon} />
             <QToolbarTitle>
@@ -201,7 +201,6 @@ export class QInputEx extends Vue {
           <QCardSection>
             <vComp {...{props: popupAttrs}}
               onInput={(value:any)=> {
-                console.log('natveinput', value)
                 if (typeof onInput === 'function') {
                   onInput.call(this, value);
                 } else {
