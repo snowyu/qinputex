@@ -6,19 +6,26 @@ The Advance Input Component for Quasar is used as single-line input box for date
 
 ## Usage
 
+Above Quasar@v1.0.0-beta.11.
+
 You should enable these quasar components before used(`quasar.conf.js`):
 
 QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
 QInput, QSelect, QDate, QTime, QColor
 
-The quasar directive: `close-dialog`  and the `vue-i18n` plugin.
+The quasar directive: `close-popup`  and the `vue-i18n` plugin.
 
-There are four slots as the same as the `QInput` component:
+There are four internal slots as the same as the `QInput` component:
 
-* before
-* prepend
-* append
-* after
+* `before`
+* `prepend`
+* `append`
+* `after`
+
+There are new two external slots in the `QInputEx` component:
+
+* `top`: the slot on the top of QInput Component
+* `bottom`: the slot on the bottom of QInput Component
 
 The `qinputex/dist/` is output for `es2015`, `esm`, `umd`, `cjs`.
 

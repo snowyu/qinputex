@@ -1,5 +1,6 @@
 <template lang="pug">
   q-page(class="flex flex-center")
+
     q-list
       q-item
         //- q-item-section(avatar)
@@ -10,6 +11,27 @@
               q-btn(flat :label='`${type}:`')
             template(v-slot:append)
               q-btn(label="append")
+            template(v-slot:bottom)
+              .q-gutter-xs
+                q-chip(removable="" @remove="log('Icecream')" color="primary" text-color="white" icon="cake")
+                  | On
+                q-chip(removable="" @remove="log('Icecream')" color="teal" text-color="white" icon="cake")
+                  | The
+                q-chip(removable="" @remove="log('Icecream')" color="orange" text-color="white" icon="cake")
+                  | Bottom
+                q-chip(disable="" removable="" @remove="log('Icecream')" color="red" text-color="white" icon="cake")
+                  | Slot
+            template(v-slot:top)
+              .q-gutter-xs
+                q-chip(removable="" @remove="log('Icecream')" color="primary" text-color="white" icon="cake")
+                  | On
+                q-chip(removable="" @remove="log('Icecream')" color="teal" text-color="white" icon="cake")
+                  | The
+                q-chip(removable="" @remove="log('Icecream')" color="orange" text-color="white" icon="cake")
+                  | Top
+                q-chip(disable="" removable="" @remove="log('Icecream')" color="red" text-color="white" icon="cake")
+                  | Slot
+
         q-item-section(side)
           q-btn(@click="doclick" label="next")
 </template>

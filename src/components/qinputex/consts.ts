@@ -19,7 +19,7 @@ export interface InputAttach {
 }
 
 export type InputAttachName = 'before' | 'after' | 'prepend' | 'append';
-export const InputAttachNames = ['before' , 'after' , 'prepend' , 'append'];
+export const InternalInputAttachNames = ['before' , 'after' , 'prepend' , 'append'];
 
 export interface InputAttaches {
   before?: InputAttach|InputAttach[];

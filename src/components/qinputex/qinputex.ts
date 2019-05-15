@@ -44,7 +44,7 @@ import { VNode, CreateElement } from 'vue';
 
 import {
   InputPopup, InputAttach, InputAttaches, InputType,
-  InputAttachName, InputAttachNames,
+  InputAttachName, InternalInputAttachNames,
   GRegisteredTypes, register,
 } from './consts';
 
@@ -180,11 +180,11 @@ export class QInputEx extends Vue {
           h('QToolbarTitle', this.$t('Please select', {type: this.$t(vCaption)}) as string),
           // h(QBtn, {
           //   props:{flat: true, dense: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
-          //   directives: [{name: 'close-dialog'}]
+          //   directives: [{name: 'close-popup'}]
           // }),
           h('QBtn', {
             props:{flat: true, round: true, color: "secondary", icon: 'close'},
-            directives: [{name: 'close-dialog'}]
+            directives: [{name: 'close-popup'}]
           }),
         ]),
         h('QCardSection', [
@@ -204,7 +204,7 @@ export class QInputEx extends Vue {
       ])
     ])
   }
-  __getAttach(h: CreateElement, attach: InputAttach): VNode {
+  __getInternalAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
     if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
@@ -223,6 +223,21 @@ export class QInputEx extends Vue {
   }
 
   render(h: CreateElement): VNode {
+    const vTopSlot: any = this.$scopedSlots.top;
+    const vBottomSlot: any = this.$scopedSlots.bottom;
+    if (vTopSlot || vBottomSlot) {
+      const result: any = [];
+      if (vTopSlot) result.push(h('div', {staticClass: 'row'}, vTopSlot()));
+      result.push(this.__render(h));
+      if (vBottomSlot) result.push(h('div', {staticClass: 'row'}, vBottomSlot()));
+      return h('div', {
+      }, result);
+    } else {
+      return this.__render(h);
+    }
+  }
+
+  __render(h: CreateElement): VNode {
     const defaultAttrs = {
       filled: true, mask: this.mask, rules: this.rules, type: this.nativeType,
       value: this.iValue,
@@ -232,7 +247,7 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     const that = this;
     const onInput = this.iType!['@input'];
-    InputAttachNames.forEach((name: any)=>{
+    InternalInputAttachNames.forEach((name: any)=>{
       genAttach(name)
     })
 
@@ -263,13 +278,13 @@ export class QInputEx extends Vue {
             if (!Array.isArray(vAttach)) vAttach = [vAttach];
             // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
             vAttach.forEach((item: InputAttach) => {
-              result.push(that.__getAttach(h, item));
+              result.push(that.__getInternalAttach(h, item));
             });
           }
           return result;
         }
       }
-      }
+    }
   }
 
 }

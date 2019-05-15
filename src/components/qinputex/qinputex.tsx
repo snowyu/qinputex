@@ -54,7 +54,7 @@ import { QPopupProxy, QCard, QCardSection, QBtn, QToolbarTitle, QToolbar } from 
 
 import {
   InputPopup, InputAttach, InputAttaches, InputType,
-  InputAttachName, InputAttachNames,
+  InputAttachName, InternalInputAttachNames,
   GRegisteredTypes, register,
 } from './consts';
 
@@ -212,7 +212,7 @@ export class QInputEx extends Vue {
       </QPopupProxy>
     );
   }
-  __getAttach(h: CreateElement, attach: InputAttach): VNode {
+  __getInternalAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
     if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
@@ -231,6 +231,21 @@ export class QInputEx extends Vue {
   }
 
   render(h: CreateElement): VNode {
+    let vTopSlot: any = this.$scopedSlots.top;
+    let vBottomSlot: any = this.$scopedSlots.bottom;
+    vTopSlot = vTopSlot ? vTopSlot() : undefined;
+    vBottomSlot = vBottomSlot ? vBottomSlot() : undefined;
+    if (vTopSlot || vBottomSlot) {
+      return <div>
+        <div class='row'>{vTopSlot}</div>
+        {this.__render(h)}
+        <div class='row'>{vBottomSlot}</div>
+      </div>
+    } else {
+      return this.__render(h);
+    }
+  }
+  __render(h: CreateElement): VNode {
     const defaultAttrs = {
       filled: true, mask: this.mask, rules: this.rules, type: this.nativeType,
       value: this.iValue,
@@ -240,7 +255,7 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     const that = this;
     const onInput = this.iType!['@input'];
-    InputAttachNames.forEach((name: any)=>{
+    InternalInputAttachNames.forEach((name: any)=>{
       genAttach(name)
     })
 
@@ -271,7 +286,7 @@ export class QInputEx extends Vue {
             if (!Array.isArray(vAttach)) vAttach = [vAttach];
             // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
             vAttach.forEach((item: InputAttach) => {
-              result.push(that.__getAttach(h, item));
+              result.push(that.__getInternalAttach(h, item));
             });
           }
           return result;

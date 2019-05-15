@@ -107,6 +107,7 @@ module.exports = function (ctx) {
         'QColor',
         'QAvatar',
         'QBanner',
+        'QChip',
       ],
 
       directives: [
