@@ -10,7 +10,14 @@ export interface InputPopupObject {
 
 export type InputPopup = string|InputPopupObject;
 
-export interface InputAttach {
+export interface InputComponentAttach {
+  name: string;
+  props?: any;
+  attrs?: any;
+  on?: any;
+}
+
+export interface InputIconAttach {
   icon?: string;
   caption?: string;
   click?: Function;
@@ -18,14 +25,25 @@ export interface InputAttach {
   attrs?: any;
 }
 
-export type InputAttachName = 'before' | 'after' | 'prepend' | 'append';
+// export type InputAttach = InputIconAttach | InputComponentAttach;
+export interface InputAttach extends InputIconAttach {
+  name?: string;
+  props?: any;
+  on?: any;
+  isAfter?: boolean;
+}
+
+export type InputAttachName = 'before' | 'after' | 'prepend' | 'append' | 'top' | 'bottom';
 export const InternalInputAttachNames = ['before' , 'after' , 'prepend' , 'append'];
+export const ExternalInputAttachNames = ['top' , 'bottom'];
 
 export interface InputAttaches {
   before?: InputAttach|InputAttach[];
   after?: InputAttach|InputAttach[];
   prepend?: InputAttach|InputAttach[];
   append?: InputAttach|InputAttach[];
+  top?: InputAttach|InputAttach[];
+  bottom?: InputAttach|InputAttach[];
 }
 
 export interface InputType {

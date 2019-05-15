@@ -53,8 +53,9 @@ import * as tsx from "vue-tsx-support";
 import { QPopupProxy, QCard, QCardSection, QBtn, QToolbarTitle, QToolbar } from '../quasar';
 
 import {
+  InputIconAttach,
   InputPopup, InputAttach, InputAttaches, InputType,
-  InputAttachName, InternalInputAttachNames,
+  InputAttachName, InternalInputAttachNames, ExternalInputAttachNames,
   GRegisteredTypes, register,
 } from './consts';
 
@@ -81,6 +82,7 @@ export class QInputEx extends Vue {
   @Prop(String) icon!: string;
   @Prop() value!: string;
   @Prop({default: 'text', type: String}) type!: string;
+  @Prop(Boolean) slotAfterAttach!: boolean;
   // @Prop(String) mask!: string;
   // @Prop() rules!: null|[string];
 
@@ -169,7 +171,7 @@ export class QInputEx extends Vue {
   }
 
   // render helper functions:
-  __getPopup(h: CreateElement, attach: InputAttach): VNode {
+  __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
     const toValue = (attach.popup as any).toValue;
     const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
     const popupAttrs:any = Object.assign({value: vValue, filled: true}, this.$attrs);
@@ -212,9 +214,15 @@ export class QInputEx extends Vue {
       </QPopupProxy>
     );
   }
-  __getInternalAttach(h: CreateElement, attach: InputAttach): VNode {
+  __getAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
-    if (attach.icon || attach.caption) {
+    if (attach.name) {
+      const vPropData = {} as any;
+      if (attach.props) vPropData.props = attach.props;
+      if (attach.attrs) vPropData.attrs = attach.attrs;
+      if (attach.on) vPropData.on = attach.on;
+      result = h(attach.name, vPropData);
+    } else if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
       const on: any = {};
       const vClick = attach.click;
@@ -230,22 +238,29 @@ export class QInputEx extends Vue {
     return result;
   }
 
-  render(h: CreateElement): VNode {
-    let vTopSlot: any = this.$scopedSlots.top;
-    let vBottomSlot: any = this.$scopedSlots.bottom;
-    vTopSlot = vTopSlot ? vTopSlot() : undefined;
-    vBottomSlot = vBottomSlot ? vBottomSlot() : undefined;
-    if (vTopSlot || vBottomSlot) {
-      return <div>
-        <div class='row'>{vTopSlot}</div>
-        {this.__render(h)}
-        <div class='row'>{vBottomSlot}</div>
-      </div>
-    } else {
-      return this.__render(h);
+  protected __genAttach(h: CreateElement, name: InputAttachName, scopedSlots: any) {
+    const that = this;
+    let vAttach: InputAttach|InputAttach[]|undefined = that.attaches[name];
+    const vSlot: any = that.$scopedSlots[name];
+    if (vAttach || vSlot) {
+      const vSlotAfterAttach = that.slotAfterAttach;
+      scopedSlots[name] = (props: any) => {
+        const result: any = [];
+        if (vSlot && !vSlotAfterAttach) result.push(vSlot(props));
+        if (vAttach) {
+          if (!Array.isArray(vAttach)) vAttach = [vAttach];
+          // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
+          vAttach.forEach((item: InputAttach) => {
+            result.push(that.__getAttach(h, item));
+          });
+        }
+        if (vSlot && vSlotAfterAttach) result.push(vSlot(props));
+        return result;
+      }
     }
   }
-  __render(h: CreateElement): VNode {
+
+  protected __render(h: CreateElement): VNode {
     const defaultAttrs = {
       filled: true, mask: this.mask, rules: this.rules, type: this.nativeType,
       value: this.iValue,
@@ -256,7 +271,7 @@ export class QInputEx extends Vue {
     const that = this;
     const onInput = this.iType!['@input'];
     InternalInputAttachNames.forEach((name: any)=>{
-      genAttach(name)
+      this.__genAttach(h, name, scopedSlots)
     })
 
     return h(vComp, {
@@ -274,25 +289,27 @@ export class QInputEx extends Vue {
       },
       scopedSlots,
     });
+  }
 
-    function genAttach(name: InputAttachName) {
-      let vAttach: any = that.attaches[name];
-      const vSlot: any = that.$scopedSlots[name];
-      if (vAttach || vSlot) {
-        scopedSlots[name] = (props: any) => {
-          const result: any = [];
-          if (vSlot) result.push(vSlot(props));
-          if (vAttach) {
-            if (!Array.isArray(vAttach)) vAttach = [vAttach];
-            // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
-            vAttach.forEach((item: InputAttach) => {
-              result.push(that.__getInternalAttach(h, item));
-            });
-          }
-          return result;
-        }
-      }
-      }
+  render(h: CreateElement): VNode {
+    const scopedSlots: any = {};
+    ExternalInputAttachNames.forEach((name: any)=>{
+      this.__genAttach(h, name, scopedSlots)
+    })
+    const vSlotTop = scopedSlots.top;
+    const vSlotBottom = scopedSlots.bottom;
+
+    if (vSlotTop || vSlotBottom) {
+      const result: any = [];
+      if (vSlotTop)
+        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotTop()));
+      result.push(this.__render(h));
+      if (vSlotBottom)
+        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotBottom()));
+      return h('div', {staticClass: 'q-field-ex'}, result);
+    } else {
+      return this.__render(h);
+    }
   }
 
 }
