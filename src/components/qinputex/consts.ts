@@ -1,3 +1,6 @@
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { VueConstructor } from 'vue';
+
 export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' | 'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
 export interface InputPopupObject {
@@ -11,7 +14,7 @@ export interface InputPopupObject {
 export type InputPopup = string|InputPopupObject;
 
 export interface InputComponentAttach {
-  name: string;
+  name: string|VueConstructor<Vue>;
   props?: any;
   attrs?: any;
   on?: any;
@@ -27,7 +30,7 @@ export interface InputIconAttach {
 
 // export type InputAttach = InputIconAttach | InputComponentAttach;
 export interface InputAttach extends InputIconAttach {
-  name?: string;
+  name?: string|VueConstructor<Vue>;
   props?: any;
   on?: any;
   isAfter?: boolean;
@@ -54,6 +57,7 @@ export interface InputType {
   rules?: [string|Function];
   attaches?: InputAttaches;
   '@input'?: Function;
+  props?: any;
 }
 
 export const GRegisteredTypes: {[name: string]: InputType}  = {}

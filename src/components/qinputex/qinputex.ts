@@ -42,6 +42,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { VNode, CreateElement } from 'vue';
 // import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 
+import { hyphenate } from './hyphenate';
+
 import {
   InputIconAttach,
   InputPopup, InputAttach, InputAttaches, InputType,
@@ -69,19 +71,19 @@ register({name: 'number', type: 'number'});
   // }}
 })
 export class QInputEx extends Vue {
-  @Prop(String) icon!: string;
+  // @Prop(String) icon!: string;
   @Prop() value!: string;
   @Prop({default: 'text', type: String}) type!: string;
   @Prop(Boolean) slotAfterAttach!: boolean;
   // @Prop(String) mask!: string;
   // @Prop() rules!: null|[string];
 
-  iValue : null|string = null;
-  iType: null|InputType = null;
-  attaches: InputAttaches = {};
-  nativeType: string = 'text';
-  mask: string = '';
-  rules: null|[string|Function] = null;
+  protected iValue : null|string = null;
+  protected iType: null|InputType = null;
+  protected attaches: InputAttaches = {};
+  protected nativeType: string = 'text';
+  protected mask: string = '';
+  protected rules: null|[string|Function] = null;
 
 
   created() {
@@ -210,9 +212,22 @@ export class QInputEx extends Vue {
     let result:any;
     if (attach.name) {
       const vNodeData = {} as any;
-      if (attach.props) vNodeData.props = attach.props;
-      if (attach.attrs) vNodeData.attrs = attach.attrs;
-      if (attach.on) vNodeData.on = attach.on;
+      const vCompName = typeof attach.name  === 'string' ? attach.name: attach.name.name;
+			console.log('TCL: QInputEx -> vCompName', hyphenate(vCompName))
+      const vCompAttrs = this.$attrs && this.$attrs[hyphenate(vCompName)];
+      vNodeData.props = Object.assign({}, attach.props, vCompAttrs);
+			console.log('TCL: QInputEx -> vNodeData.props', vNodeData.props)
+      vNodeData.attrs = Object.assign({}, attach.attrs, vCompAttrs);
+			console.log('TCL: QInputEx -> vNodeData.attrs', vNodeData.attrs)
+      if (attach.on) {
+        const vOn = {} as any;
+        Object.keys(attach.on).forEach(name => {
+          if (typeof attach.on[name] === 'function') {
+            vOn[name] = attach.on[name].bind(this);
+          }
+        })
+        vNodeData.on = vOn;
+      }
       result = h(attach.name, vNodeData);
     } else if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
@@ -247,6 +262,8 @@ export class QInputEx extends Vue {
           });
         }
         if (vSlot && vSlotAfterAttach) result.push(vSlot(props));
+				// console.log('TCL: QInputEx -> protected__genAttach -> name', name, result)
+
         return result;
       }
     }

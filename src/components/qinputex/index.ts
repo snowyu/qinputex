@@ -1,4 +1,5 @@
 import './types';
 
-export * from './qinputex';
 export * from './consts';
+export * from './qinputex';
+export * from './qinput-history';

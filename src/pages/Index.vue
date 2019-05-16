@@ -6,44 +6,39 @@
         //- q-item-section(avatar)
         //-   q-icon(name="input" color="primary")
         q-item-section
-          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" :with-seconds='type==="datetime"')
+          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput"
+            :q-input-history="{icon: 'search', history: history, pinHistory:[{icon:'cake',value:'nicecake'}],maxHistory: 3}"
+            :with-seconds='type==="datetime"'
+          )
             template(v-slot:before)
               q-btn(flat :label='`${type}:`')
             template(v-slot:append)
               q-btn(label="append")
-            template(v-slot:bottom)
-              .q-gutter-xs
-                q-chip(removable="" @remove="log('Icecream')" color="primary" text-color="white" icon="cake")
-                  | On
-                q-chip(removable="" @remove="log('Icecream')" color="teal" text-color="white" icon="cake")
-                  | The
-                q-chip(removable="" @remove="log('Icecream')" color="orange" text-color="white" icon="cake")
-                  | Bottom
-                q-chip(disable="" removable="" @remove="log('Icecream')" color="red" text-color="white" icon="cake")
-                  | Slot
             template(v-slot:top)
               .q-gutter-xs
-                q-chip(removable="" @remove="log('Icecream')" color="primary" text-color="white" icon="cake")
+                q-chip(removable="" @click="doNextClick" clickable @remove="log('Icecream')" color="primary" text-color="white" icon="cake")
                   | On
-                q-chip(removable="" @remove="log('Icecream')" color="teal" text-color="white" icon="cake")
+                q-chip(removable="" color="teal" text-color="white" icon="cake")
                   | The
-                q-chip(removable="" @remove="log('Icecream')" color="orange" text-color="white" icon="cake")
+                q-chip(removable="" color="orange" text-color="white" icon="cake")
                   | Top
-                q-chip(disable="" removable="" @remove="log('Icecream')" color="red" text-color="white" icon="cake")
+                q-chip(disable="" removable="" color="red" text-color="white" icon="cake")
                   | Slot
 
         q-item-section(side)
-          q-btn(@click="doclick" label="next")
+          q-btn(@click="doNextClick" label="next")
 </template>
 
 <style></style>
 
 <script>
+import { format } from 'date-fns'
+
 // import QInputEx from "../components/qinput_ex.vue";
 import { GRegisteredTypes } from "../components/qinputex";
 // import QInputEx from "../components/qinputex/qinputex.vue";
 import { QInputEx } from "../components/qinputex/qinputex";
-import { format } from 'date-fns'
+import { QInputHistory } from "../components/qinputex/qinput-history";
 
 const InputType = Object.keys(GRegisteredTypes);
 let curr = 0;
@@ -56,17 +51,24 @@ export default {
   },
   data: () => {
     return {
-      type: InputType[0],
-      myValue: ''//format(new Date, 'yyyy/MM/dd')
+      history: []
+      ,type: 'search'//InputType[0]
+      ,myValue: ''//format(new Date, 'yyyy/MM/dd')
     }
   },
   computed: {
+  },
+  watch: {
+    'history' : function(val) {
+      console.log('changed', val)
+    }
   },
   methods: {
     onInput: (v)=>{
       console.log('qExt',v)
     },
-    doclick: function() {
+    doNextClick: function() {
+      console.log(arguments)
       this.myValue = '';
       this.type = InputType[curr];
       curr++;

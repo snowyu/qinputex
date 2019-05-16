@@ -5,3 +5,4 @@ import './time';
 import './fulltime';
 import './datetime';
 import './color';
+import './search';

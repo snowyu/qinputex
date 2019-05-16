@@ -217,11 +217,19 @@ export class QInputEx extends Vue {
   __getAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
     if (attach.name) {
-      const vPropData = {} as any;
-      if (attach.props) vPropData.props = attach.props;
-      if (attach.attrs) vPropData.attrs = attach.attrs;
-      if (attach.on) vPropData.on = attach.on;
-      result = h(attach.name, vPropData);
+      const vNodeData = {} as any;
+      vNodeData.props = attach.props ? Object.assign({}, attach.props, this.$attrs) : this.$attrs;
+      if (attach.attrs) vNodeData.attrs = attach.attrs;
+      if (attach.on) {
+        const vOn = {} as any;
+        Object.keys(attach.on).forEach(name => {
+          if (typeof attach.on[name] === 'function') {
+            vOn[name] = attach.on[name].bind(this);
+          }
+        })
+        vNodeData.on = vOn;
+      }
+      result = h(attach.name, vNodeData);
     } else if (attach.icon || attach.caption) {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
       const on: any = {};
