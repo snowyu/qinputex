@@ -50,6 +50,7 @@ import { VNode, CreateElement } from 'vue';
 // import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 import * as tsx from "vue-tsx-support";
 
+import { hyphenate } from './hyphenate';
 import { QPopupProxy, QCard, QCardSection, QBtn, QToolbarTitle, QToolbar } from '../quasar';
 
 import {
@@ -171,7 +172,7 @@ export class QInputEx extends Vue {
   }
 
   // render helper functions:
-  __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
+  protected __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
     const toValue = (attach.popup as any).toValue;
     const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
     const popupAttrs:any = Object.assign({value: vValue, filled: true}, this.$attrs);
@@ -214,12 +215,17 @@ export class QInputEx extends Vue {
       </QPopupProxy>
     );
   }
-  __getAttach(h: CreateElement, attach: InputAttach): VNode {
+  protected __getAttach(h: CreateElement, attach: InputAttach): VNode {
     let result:any;
     if (attach.name) {
       const vNodeData = {} as any;
-      vNodeData.props = attach.props ? Object.assign({}, attach.props, this.$attrs) : this.$attrs;
-      if (attach.attrs) vNodeData.attrs = attach.attrs;
+      const vCompName = typeof attach.name  === 'string' ? attach.name: attach.name.name;
+			// console.log('TCL: QInputEx -> vCompName', hyphenate(vCompName))
+      const vCompAttrs = this.$attrs && this.$attrs[hyphenate(vCompName)];
+      vNodeData.props = Object.assign({}, attach.props, vCompAttrs);
+			// console.log('TCL: QInputEx -> vNodeData.props', vNodeData.props)
+      vNodeData.attrs = Object.assign({}, attach.attrs, vCompAttrs);
+			// console.log('TCL: QInputEx -> vNodeData.attrs', vNodeData.attrs)
       if (attach.on) {
         const vOn = {} as any;
         Object.keys(attach.on).forEach(name => {
@@ -263,6 +269,8 @@ export class QInputEx extends Vue {
           });
         }
         if (vSlot && vSlotAfterAttach) result.push(vSlot(props));
+				// // console.log('TCL: QInputEx -> protected__genAttach -> name', name, result)
+
         return result;
       }
     }
@@ -303,7 +311,7 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     ExternalInputAttachNames.forEach((name: any)=>{
       this.__genAttach(h, name, scopedSlots)
-    })
+    });
     const vSlotTop = scopedSlots.top;
     const vSlotBottom = scopedSlots.bottom;
 

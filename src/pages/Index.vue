@@ -68,7 +68,6 @@ export default {
       console.log('qExt',v)
     },
     doNextClick: function() {
-      console.log(arguments)
       this.myValue = '';
       this.type = InputType[curr];
       curr++;

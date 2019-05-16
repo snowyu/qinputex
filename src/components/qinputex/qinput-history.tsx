@@ -52,7 +52,7 @@ export class QInputHistory extends Vue {
 
   removeItem(aItems: InputHistoryItem[], index: number) {
     this.$emit('removed', aItems.splice(index, 1), aItems);
-		console.log('TCL: QInputHistory -> removeItem -> aItems', aItems)
+		// console.log('TCL: QInputHistory -> removeItem -> aItems', aItems)
   }
 
   __getHistories(aItems: InputHistoryItem[], removable = true) {
@@ -61,9 +61,9 @@ export class QInputHistory extends Vue {
         const text = typeof item === 'string' ? item : item && item.value;
         const props = Object.assign({removable}, this.$attrs, item);
         delete props.value;
-				console.log('TCL: QInputHistory -> __getHistories -> props', props)
-        console.log('TCL: QInputHistory -> render -> this.$attrs', this.$attrs)
-        console.log('TCL: QInputHistory -> render -> this.$props', this.$props)
+				// console.log('TCL: QInputHistory -> __getHistories -> props', props)
+				// console.log('TCL: QInputHistory -> render -> this.$attrs', this.$attrs)
+				// console.log('TCL: QInputHistory -> render -> this.$props', this.$props)
         return <q-chip {...{props}} clickable
           onRemove={(index: number) => this.removeItem(aItems, index)}
           onClick ={() => this.$emit('click', text, index, item)}
