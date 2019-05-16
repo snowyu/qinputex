@@ -11,7 +11,7 @@ Above Quasar@v1.0.0-beta.11.
 You should enable these quasar components before used(`quasar.conf.js`):
 
 QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
-QInput, QSelect, QDate, QTime, QColor
+QInput, QSelect, QDate, QTime, QColor, QChip
 
 The quasar directive: `close-popup`  and the `vue-i18n` plugin.
 
@@ -29,14 +29,32 @@ There are new two external slots in the `QInputEx` component:
 
 The `qinputex/dist/` is output for `es2015`, `esm`, `umd`, `cjs`.
 
+`require('qinputex/dist/es2015/components/qinputex/qinputex')` will only register the basic input types(text, textarea, number) to `QInputEx`.
+
 `require('qinputex/dist/es2015/')` will register all input types to `QInputEx`
 
-`require('qinputex/dist/es2015/components/qinputex/qinputex')` will only register the basic input types(text, textarea, number) to `QInputEx`.
+* text, textarea, number
+* color
+* date
+* datetime
+* fulltime
+* time
+* password: show password or not.
+* search:
+  * `search` event
+  * `q-input-history` as chips
+    * history: ['search history', 'history2', ...]
+    * pinHistory: fixed position
+      * [{icon:'cake',value:'some cake', textColor: 'white', color:'secondary'}],
+    * maxHistory: 3 the max history item to keep.
+    * icon: 'search' default chip icon.
+    * color: 'primary' default chip color,
+    * textColor: 'white' default chip text color...
 
 ### Demo
 
-```ts
-import { QInputEx } from 'qinputex';
+```tsx
+import { QInputEx, InputHistoryItem } from 'qinputex';
 import { Vue, Component, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { VNode, CreateElement } from 'vue';
 
@@ -46,9 +64,21 @@ import { VNode, CreateElement } from 'vue';
   }
 })
 export class MyApp extends Vue {
-  //<q-input-ex type="color" value="#ff0000"/>
+  protected searchHistory: InputHistoryItem[] = [];
   render(h: CreateElement) {
-    return h(QInputEx, {props:{type: 'color', value: '#ff0000'}})
+    // return h(QInputEx, {props:{type: 'color', value: '#ff0000'}})
+    return <q-input-ex type="color" value="#ff0000"/>;
+    return <q-input-ex type="search"
+      onSearch={text: string => console.log(`search... ${text}`)}
+      q-input-history={{
+        history: this.searchHistory,
+        pinHistory:[{icon:'cake',value:'nice cake'}],
+        maxHistory: 3,
+        icon: 'search',
+        color: 'white',
+        textColor: 'black',
+      }}
+    />;
   }
 }
 ```
