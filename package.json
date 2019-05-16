@@ -10,9 +10,9 @@
   "unpkg": "dist/umd/qinputex.min.js",
   "scripts": {
     "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
-    "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015",
-    "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
-    "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015 && babel dist/es2015 -d dist/es2015",
+    "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm && babel dist/esm -d dist/esm",
+    "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs && babel dist/cjs -d dist/cjs",
     "build:umd": "rollup -c",
     "build:umd:min": "cd dist/umd && uglifyjs --compress --source-map --mangle --screw-ie8 --comments -o qinputex.min.js -- qinputex.js && gzip qinputex.min.js -c > qinputex.min.js.gz",
     "lint": "eslint --ext .js,.vue src",
