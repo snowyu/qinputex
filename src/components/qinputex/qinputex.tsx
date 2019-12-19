@@ -97,6 +97,7 @@ export class QInputEx extends Vue {
 
   created() {
     this.typeChanged(this.type);
+    this.iValue = this.value;
   }
 
   @Watch('value')
