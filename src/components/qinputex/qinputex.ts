@@ -38,17 +38,17 @@ InputType:
   * before,after, prepend/append: InputAttach
 */
 
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { VNode, CreateElement } from 'vue';
+import { CreateElement, VNode } from 'vue';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 // import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 
 import { hyphenate } from './hyphenate';
 
 import {
-  InputIconAttach,
-  InputPopup, InputAttach, InputAttaches, InputType,
-  InputAttachName, InternalInputAttachNames, ExternalInputAttachNames,
-  GRegisteredTypes, register,
+  ExternalInputAttachNames,
+  GRegisteredTypes, InputAttach, InputAttaches, InputAttachName,
+  InputIconAttach, InputPopup, InputType,
+  InternalInputAttachNames, register,
 } from './consts';
 
 register({name: 'text', type: 'text'});
@@ -64,13 +64,18 @@ register({name: 'number', type: 'number'});
 @Component({
   components: {
     // Selector,
-  }
+  },
   // inheritAttrs: false,
   // subscriptions: function(): Observables {return {
   //   ready$: this.device.ready$
   // }}
 })
 export class QInputEx extends Vue {
+
+  get inputBox() {
+    const inputBox: any = this.$refs.inputBox;
+    return inputBox.$refs.input || inputBox.$refs.target;
+  }
   // @Prop(String) icon!: string;
   @Prop() value!: string;
   @Prop({default: 'text', type: String}) type!: string;
@@ -78,13 +83,12 @@ export class QInputEx extends Vue {
   // @Prop(String) mask!: string;
   // @Prop() rules!: null|[string];
 
-  protected iValue : null|string = null;
+  protected iValue: null|string = null;
   protected iType: null|InputType = null;
   protected attaches: InputAttaches = {};
   protected nativeType: string = 'text';
   protected mask: string = '';
   protected rules: null|[string|Function] = null;
-
 
   created() {
     this.typeChanged(this.type);
@@ -114,26 +118,26 @@ export class QInputEx extends Vue {
   resetValidation() {
     const vInput: any = this.$refs.inputBox;
     if ( vInput && vInput.resetValidation) {
-      this.$nextTick(()=>vInput.resetValidation());
+      this.$nextTick(() => vInput.resetValidation());
       // vInput.resetValidation();
     }
   }
 
   cloneType(aType: InputType) {
     this.iType = aType;
-    if (aType.mask) this.mask = aType.mask;
-    if (aType.rules) this.rules = aType.rules;
+    if (aType.mask) { this.mask = aType.mask; }
+    if (aType.rules) { this.rules = aType.rules; }
     this.nativeType = aType.type;
     const vAttaches: any = this.attaches;
     if (aType.attaches) {
-      Object.keys(aType.attaches).forEach((attachName)=>{
+      Object.keys(aType.attaches).forEach((attachName) => {
         const src: any = aType.attaches;
         if (Array.isArray(src[attachName])) {
-          vAttaches[attachName] = src[attachName].map((item:any)=>Object.assign({}, item));
+          vAttaches[attachName] = src[attachName].map((item: any) => Object.assign({}, item));
         } else {
           vAttaches[attachName] = Object.assign({}, src[attachName]);
         }
-      })
+      });
     }
     this.resetValidation();
   }
@@ -141,7 +145,7 @@ export class QInputEx extends Vue {
   @Watch('type')
   typeChanged(value: string) {
     const vInputType = GRegisteredTypes[value];
-    if (!vInputType) throw new Error(`The input '${value}' type is not exists`);
+    if (!vInputType) { throw new Error(`The input '${value}' type is not exists`); }
     this.clearType();
     this.cloneType(vInputType);
   }
@@ -158,62 +162,80 @@ export class QInputEx extends Vue {
     this.inputBox.focus();
   }
 
-  get inputBox() {
-    const inputBox: any = this.$refs.inputBox;
-    return inputBox.$refs.input || inputBox.$refs.target;
+  render(h: CreateElement): VNode {
+    const scopedSlots: any = {};
+    ExternalInputAttachNames.forEach((name: any) => {
+      this.__genAttach(h, name, scopedSlots);
+    });
+    const vSlotTop = scopedSlots.top;
+    const vSlotBottom = scopedSlots.bottom;
+
+    if (vSlotTop || vSlotBottom) {
+      const result: any = [];
+      if (vSlotTop) {
+        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotTop()));
+      }
+      result.push(this.__render(h));
+      if (vSlotBottom) {
+        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotBottom()));
+      }
+      return h('div', {staticClass: 'q-field-ex'}, result);
+    } else {
+      return this.__render(h);
+    }
   }
 
   // render helper functions:
   protected __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
     const toValue = (attach.popup as any).toValue;
     const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
-    const popupAttrs:any = Object.assign({value: vValue, filled: true}, this.$attrs);
+    const popupAttrs: any = Object.assign({value: vValue, filled: true}, this.$attrs);
     const vComp = this.getPopupComponent(attach.popup);
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
-      Object.assign(popupAttrs, (attach.popup as any).attrs)
+      Object.assign(popupAttrs, (attach.popup as any).attrs);
     }
     const vCaption = (attach.popup as any).caption || this.type;
     const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
     return h('QPopupProxy', {props: {maxHeight: '100vh', breakpoint: 800}}, [
-      //, 'max-height':'480px'
-      //{staticStyle: {'width': '100%', 'height': '800px'}},
+      // , 'max-height':'480px'
+      // {staticStyle: {'width': '100%', 'height': '800px'}},
       h('QCard', [
         h('QToolbar', [
-          h('QBtn', {props:{flat: true, round: true, icon: attach.icon}}),
+          h('QBtn', {props: {flat: true, round: true, icon: attach.icon}}),
           h('QToolbarTitle', this.$t('Please select', {type: this.$t(vCaption)}) as string),
           // h(QBtn, {
           //   props:{flat: true, dense: true, color: "secondary", label:this.$q.lang.label.ok, icon: 'done'},
           //   directives: [{name: 'close-popup'}]
           // }),
           h('QBtn', {
-            props:{flat: true, round: true, color: "secondary", icon: 'close'},
-            directives: [{name: 'close-popup'}]
+            props: {flat: true, round: true, color: 'secondary', icon: 'close'},
+            directives: [{name: 'close-popup'}],
           }),
         ]),
         h('QCardSection', [
           h(vComp, {
             props: popupAttrs,
             on: {
-              input: (value:any)=> {
+              input: (value: any) => {
                 if (typeof onInput === 'function') {
                   onInput.call(this, value);
                 } else {
                   this.iValue = value;
                 }
-              }
-            }
-          })
+              },
+            },
+          }),
         ]),
-      ])
-    ])
+      ]),
+    ]);
   }
   protected __getAttach(h: CreateElement, attach: InputAttach): VNode {
-    let result:any;
+    let result: any;
     if (attach.name) {
       const vNodeData = {} as any;
-      const vCompName = typeof attach.name  === 'string' ? attach.name: attach.name.name;
+      const vCompName = typeof attach.name  === 'string' ? attach.name : attach.name.name;
 			// console.log('TCL: QInputEx -> vCompName', hyphenate(vCompName))
       const vCompAttrs = this.$attrs && this.$attrs[hyphenate(vCompName)];
       vNodeData.props = Object.assign({}, attach.props, vCompAttrs);
@@ -226,7 +248,7 @@ export class QInputEx extends Vue {
           if (typeof attach.on[name] === 'function') {
             vOn[name] = attach.on[name].bind(this);
           }
-        })
+        });
         vNodeData.on = vOn;
       }
       result = h(attach.name, vNodeData);
@@ -234,13 +256,13 @@ export class QInputEx extends Vue {
       const attrs = Object.assign({flat: true, dense: true}, attach.attrs);
       const on: any = {};
       const vClick = attach.click;
-      if (attach.icon) attrs.icon = attach.icon;
-      if (attach.caption) attrs.label = attach.caption;
-      if (vClick) on.click = (e: MouseEvent)=> vClick.call(this, e);
+      if (attach.icon) { attrs.icon = attach.icon; }
+      if (attach.caption) { attrs.label = attach.caption; }
+      if (vClick) { on.click = (e: MouseEvent) => vClick.call(this, e); }
       if (attach.popup) {
-        result = h('QBtn', {props:attrs, on}, [this.__getPopup(h, attach)]);
+        result = h('QBtn', {props: attrs, on}, [this.__getPopup(h, attach)]);
       } else {
-        result = h('QBtn', {props:attrs, on});
+        result = h('QBtn', {props: attrs, on});
       }
     }
     return result;
@@ -254,19 +276,19 @@ export class QInputEx extends Vue {
       const vSlotAfterAttach = that.slotAfterAttach;
       scopedSlots[name] = (props: any) => {
         const result: any = [];
-        if (vSlot && !vSlotAfterAttach) result.push(vSlot(props));
+        if (vSlot && !vSlotAfterAttach) { result.push(vSlot(props)); }
         if (vAttach) {
-          if (!Array.isArray(vAttach)) vAttach = [vAttach];
+          if (!Array.isArray(vAttach)) { vAttach = [vAttach]; }
           // result.concat(vAttach.map((item: InputAttach) => that.__getAttach(h, item)))
           vAttach.forEach((item: InputAttach) => {
             result.push(that.__getAttach(h, item));
           });
         }
-        if (vSlot && vSlotAfterAttach) result.push(vSlot(props));
+        if (vSlot && vSlotAfterAttach) { result.push(vSlot(props)); }
 				// // console.log('TCL: QInputEx -> protected__genAttach -> name', name, result)
 
         return result;
-      }
+      };
     }
   }
 
@@ -280,18 +302,19 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     const that = this;
     const onInput = this.iType!['@input'];
-    InternalInputAttachNames.forEach((name: any)=>{
-      this.__genAttach(h, name, scopedSlots)
-    })
+    InternalInputAttachNames.forEach((name: any) => {
+      this.__genAttach(h, name, scopedSlots);
+    });
 
     return h(vComp, {
       ref: 'inputBox',
       props,
+      attrs: {placeholder: props.placeholder},
       on: {
         ...this.$listeners,
-        input: (value: any)=> {
+        input: (value: any) => {
           if (typeof onInput === 'function') {
-            onInput.call(that, value)
+            onInput.call(that, value);
           } else {
             this.iValue = value;
           }
@@ -299,27 +322,6 @@ export class QInputEx extends Vue {
       },
       scopedSlots,
     });
-  }
-
-  render(h: CreateElement): VNode {
-    const scopedSlots: any = {};
-    ExternalInputAttachNames.forEach((name: any)=>{
-      this.__genAttach(h, name, scopedSlots)
-    });
-    const vSlotTop = scopedSlots.top;
-    const vSlotBottom = scopedSlots.bottom;
-
-    if (vSlotTop || vSlotBottom) {
-      const result: any = [];
-      if (vSlotTop)
-        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotTop()));
-      result.push(this.__render(h));
-      if (vSlotBottom)
-        result.push(h('div', {staticClass: `row q-field-${name}`}, vSlotBottom()));
-      return h('div', {staticClass: 'q-field-ex'}, result);
-    } else {
-      return this.__render(h);
-    }
   }
 
 }
