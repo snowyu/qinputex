@@ -1,5 +1,5 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { VNode, CreateElement } from 'vue';
+import { CreateElement, VNode } from 'vue';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 export interface IHistoryItem {
   value: string;
@@ -17,7 +17,7 @@ export type InputHistoryItem = string|IHistoryItem;
 
 @Component({
   components: {
-  }
+  },
 })
 export class QInputHistory extends Vue {
   @Prop({type: Array}) history!: InputHistoryItem[];
@@ -40,7 +40,6 @@ export class QInputHistory extends Vue {
     }
     this.pinItems = val;
   }
-
 
   add(aItem: InputHistoryItem) {
     this.items.unshift(aItem);
@@ -65,18 +64,19 @@ export class QInputHistory extends Vue {
 				// console.log('TCL: QInputHistory -> render -> this.$attrs', this.$attrs)
 				// console.log('TCL: QInputHistory -> render -> this.$props', this.$props)
         return <q-chip {...{props}} clickable
-          onRemove={(index: number) => this.removeItem(aItems, index)}
+          onRemove={(i: number) => this.removeItem(aItems, i)}
           onClick ={() => this.$emit('click', text, index, item)}
         >{text}</q-chip>;
-      })
+      });
     }
   }
 
   render() {
-    if (this.items)
+    if (this.items) {
       return <div class='q-input-history q-gutter-xs'>
         {this.__getHistories(this.pinItems, false)}
         {this.__getHistories(this.items)}
       </div>;
+    }
   }
 }
