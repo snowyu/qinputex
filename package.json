@@ -32,7 +32,8 @@
     "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
   },
   "dependencies": {
-    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0"
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+    "flag-icon-css": "^3.4.5"
   },
   "peerDependencies": {
     "quasar": ">=1",
