@@ -1,4 +1,4 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 export const TimeInput: InputType = {
   name: 'time',
@@ -6,14 +6,14 @@ export const TimeInput: InputType = {
   mask: 'time',
   rules: ['time'],
   attaches: {
-    'append': {
+    append: {
       icon: 'access_time',
       popup: {
         name: 'QTime',
-      }
+      },
 
-    }
-  }
-}
+    },
+  },
+};
 
 register(TimeInput);

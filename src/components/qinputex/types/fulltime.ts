@@ -1,4 +1,4 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 export const TimeInput: InputType = {
   name: 'fulltime',
@@ -6,17 +6,17 @@ export const TimeInput: InputType = {
   mask: 'fulltime',
   rules: ['fulltime'],
   attaches: {
-    'append': {
+    append: {
       icon: 'access_time',
       popup: {
         name: 'QTime',
         attrs: {
-          'with-seconds': true
+          'with-seconds': true,
         },
-      }
+      },
 
-    }
-  }
-}
+    },
+  },
+};
 
 register(TimeInput);

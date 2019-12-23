@@ -1,4 +1,4 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 // function padStr(value: number, size: number = 2): string {
 //   var s = String(value);
@@ -18,17 +18,17 @@ export const DateInput: InputType = {
   mask: 'date',
   rules: ['date'],
   attaches: {
-    'append': {
+    append: {
       icon: 'event',
       popup: {
         name: 'QDate',
         // attrs: {
         //   'default-year-month': getCurrentYM()
         // }
-      }
+      },
 
-    }
-  }
-}
+    },
+  },
+};
 
 register(DateInput);

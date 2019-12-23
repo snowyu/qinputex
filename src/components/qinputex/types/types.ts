@@ -1,4 +1,4 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 register({
   name: 'email',
@@ -6,8 +6,8 @@ register({
   attaches: {
     before: {
       icon: 'email',
-    }
-  }
+    },
+  },
 });
 
 register({
@@ -16,8 +16,8 @@ register({
   attaches: {
     before: {
       icon: 'link',
-    }
-  }
+    },
+  },
 });
 
 register({
@@ -26,7 +26,6 @@ register({
   attaches: {
     before: {
       icon: 'phone',
-    }
-  }
+    },
+  },
 });
-

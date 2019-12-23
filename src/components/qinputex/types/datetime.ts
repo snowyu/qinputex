@@ -1,4 +1,4 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 // function padStr(value: number, size: number = 2): string {
 //   var s = String(value);
@@ -13,14 +13,14 @@ import { register, InputType } from '../consts';
 // }
 
 function tolocalISOString(aDate: Date) {
-  const tzoffset = aDate.getTimezoneOffset() * 60000; //offset in milliseconds
+  const tzoffset = aDate.getTimezoneOffset() * 60000; // offset in milliseconds
   const result = (new Date(aDate.valueOf() - tzoffset)).toISOString().slice(0, -1);
   return result;
 }
 
 function mergeTime(that: any, aTime: string) {
   const v = new Date(that.iValue || 0);
-  const vTime: any = aTime.split(':').map(i=>parseInt(i, 10));
+  const vTime: any = aTime.split(':').map(i => parseInt(i, 10));
   v.setHours.apply(v, vTime);
   return tolocalISOString(v);
 }
@@ -43,36 +43,36 @@ export const DateTimeInput: InputType = {
 
   // },
   attaches: {
-    'append': [
+    append: [
       {
         icon: 'event',
         popup: {
-          name: 'QDate',
-          caption: 'date',
-          'toValue': function(value:any) {
+          'name': 'QDate',
+          'caption': 'date',
+          'toValue'(value: any) {
             // convert the value of the input box to the popup component
             let result: any = value;
             if (result) {
               result = result.split('T');
               if (result.length) {
-                result = result[0].replace(/-/g, '/')
+                result = result[0].replace(/-/g, '/');
               }
             }
             return result;
           },
-          '@input': function(value: string) {
-            //convert the value of popup to the input.
+          '@input'(value: string) {
+            // convert the value of popup to the input.
             const that: any = this;
-            if (value) that.iValue = mergeDate(that, value);
+            if (value) { that.iValue = mergeDate(that, value); }
           },
-        }
+        },
       },
       {
         icon: 'access_time',
         popup: {
-          name: 'QTime',
-          caption: 'time',
-          'toValue': function(value:any) {
+          'name': 'QTime',
+          'caption': 'time',
+          'toValue'(value: any) {
             let result: any = value;
             if (result) {
               result = result.split('T');
@@ -82,14 +82,14 @@ export const DateTimeInput: InputType = {
             }
             return result;
           },
-          '@input': function(value: string) {
+          '@input'(value: string) {
             const that: any = this;
-            if (value) that.iValue = mergeTime(that, value);
+            if (value) { that.iValue = mergeTime(that, value); }
           },
-        }
+        },
       },
     ],
-  }
-}
+  },
+};
 
 register(DateTimeInput);

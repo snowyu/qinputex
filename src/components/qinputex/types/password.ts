@@ -1,21 +1,21 @@
-import { register, InputType } from '../consts';
+import { InputType, register } from '../consts';
 
 const PasswordInput: InputType = {
   name: 'password',
   type: 'password',
   attaches: {
-    'before': {
+    before: {
       icon: 'vpn_key',
     },
-    'append': {
+    append: {
       icon: 'visibility',
-      click: function() {
+      click() {
         const vIsVisiblePwd = (this as any).isVisiblePwd = !(this as any).isVisiblePwd;
         (this as any).attaches.append.icon = vIsVisiblePwd ? 'visibility_off' : 'visibility';
-        (this as any).nativeType = vIsVisiblePwd ? 'text': 'password';
-      }
-    }
-  }
-}
+        (this as any).nativeType = vIsVisiblePwd ? 'text' : 'password';
+      },
+    },
+  },
+};
 
 register(PasswordInput);
