@@ -1,7 +1,7 @@
 <template lang="pug">
   q-page(class="flex flex-center")
 
-    q-list
+    q-list(border separator)
       q-item
         //- q-item-section(avatar)
         //-   q-icon(name="input" color="primary")
@@ -9,6 +9,7 @@
           q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput"
             :q-input-history="{icon: 'search', history: history, pinHistory:[{icon:'cake',value:'nicecake'}],maxHistory: 3}"
             :with-seconds='type==="datetime"'
+            :slots="{replaced: ['append']}"
           )
             template(v-slot:before)
               q-btn(flat :label='`${type}:`')
@@ -27,6 +28,29 @@
 
         q-item-section(side)
           q-btn(@click="doNextClick" label="next")
+      q-item
+        q-item-section
+          q-input-ex(ref="custom" :type=`{
+            name: 'custom',
+            type: 'text',
+            attaches: {
+              prepend: {
+                icon: 'event',
+                popup: {
+                  name: 'QDate',
+                  // attrs: {
+                  //   'default-year-month': getCurrentYM()
+                  // }
+                },
+              },
+              append: {
+                icon: 'colorize',
+                popup: {
+                  name: 'QColor',
+                },
+              },
+            },
+          }`)
 </template>
 
 <style></style>

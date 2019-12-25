@@ -78,7 +78,7 @@ export class QInputEx extends Vue {
   }
   // @Prop(String) icon!: string;
   @Prop() value!: string;
-  @Prop({default: 'text', type: String}) type!: string;
+  @Prop({default: 'text', type: [String, Object]}) type!: string|InputType;
   @Prop(Boolean) slotAfterAttach!: boolean;
   // @Prop(String) mask!: string;
   // @Prop() rules!: null|[string];
@@ -143,8 +143,8 @@ export class QInputEx extends Vue {
   }
 
   @Watch('type')
-  typeChanged(value: string) {
-    const vInputType = GRegisteredTypes[value];
+  typeChanged(value: string|InputType) {
+    const vInputType = typeof value === 'string' ? GRegisteredTypes[value] : value;
     if (!vInputType) { throw new Error(`The input '${value}' type is not exists`); }
     this.clearType();
     this.cloneType(vInputType);
