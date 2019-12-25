@@ -37,7 +37,29 @@ function mergeDate(that: any, aDate: string) {
 export const DateTimeInput: InputType = {
   name: 'datetime',
   type: 'tel',
-  // mask: 'date',
+  mask: '####-##-## ##:##:##',
+  inValue(value: string) {
+    // pass the ISODateTime value into the DateTime Component
+    if (value) {
+      const vDate = new Date(value);
+      value = vDate.getFullYear() + '-' +
+        ('0' + (vDate.getMonth() + 1)).slice(-2) + '-' +
+        ('0' + vDate.getDate()).slice(-2) +
+        ' ' +
+        ('0' + vDate.getHours()).slice(-2) + ':' +
+        ('0' + vDate.getMinutes()).slice(-2) + ':' +
+        ('0' + vDate.getSeconds()).slice(-2);
+    }
+    return value;
+  },
+  outValue(value: string) {
+    // convert the internal datetime string to ISO Date before emit input
+    if (value) {
+      const vDate = new Date(value);
+      value = vDate.toISOString();
+    }
+    return value;
+  },
   // rules: ['date'],
   // '@input': function(value: string) {
 
@@ -47,8 +69,12 @@ export const DateTimeInput: InputType = {
       {
         icon: 'event',
         popup: {
-          'name': 'QDate',
-          'caption': 'date',
+          name: 'QDate',
+          caption: 'date',
+          attrs: {
+            mask: 'YYYY-MM-DD HH:mm:ss',
+          },
+          /*
           'toValue'(value: any) {
             // convert the value of the input box to the popup component
             let result: any = value;
@@ -65,14 +91,19 @@ export const DateTimeInput: InputType = {
             const that: any = this;
             if (value) { that.iValue = mergeDate(that, value); }
           },
+          */
         },
       },
       {
         icon: 'access_time',
         popup: {
-          'name': 'QTime',
-          'caption': 'time',
-          'toValue'(value: any) {
+          name: 'QTime',
+          caption: 'time',
+          attrs: {
+            mask: 'YYYY-MM-DD HH:mm:ss',
+          },
+          /*
+          toValue(value: any) {
             let result: any = value;
             if (result) {
               result = result.split('T');
@@ -86,6 +117,7 @@ export const DateTimeInput: InputType = {
             const that: any = this;
             if (value) { that.iValue = mergeTime(that, value); }
           },
+          */
         },
       },
     ],
