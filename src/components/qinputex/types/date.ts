@@ -14,7 +14,7 @@ import { InputType, register } from '../consts';
 
 export const DateInput: InputType = {
   name: 'date',
-  type: 'text',
+  type: 'tel',
   mask: 'date',
   rules: ['date'],
   attaches: {

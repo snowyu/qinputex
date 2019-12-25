@@ -2,7 +2,7 @@ import { InputType, register } from '../consts';
 
 export const TimeInput: InputType = {
   name: 'fulltime',
-  type: 'text',
+  type: 'tel',
   mask: 'fulltime',
   rules: ['fulltime'],
   attaches: {

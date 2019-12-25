@@ -36,7 +36,7 @@ function mergeDate(that: any, aDate: string) {
 
 export const DateTimeInput: InputType = {
   name: 'datetime',
-  type: 'text',
+  type: 'tel',
   // mask: 'date',
   // rules: ['date'],
   // '@input': function(value: string) {
