@@ -203,7 +203,7 @@ export class QInputEx extends Vue {
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs);
     }
-    const vCaption = (attach.popup as any).caption || this.type;
+    const vCaption = (attach.popup as any).caption || this.iType!.name;
     const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false

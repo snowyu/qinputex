@@ -1,7 +1,8 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { VueConstructor } from 'vue';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
-export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' | 'file' | 'number' | 'url' | 'select' | 'date' | 'time';
+export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' |
+  'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
 export interface InputPopupObject {
   name: string; // the Component name to popup
@@ -58,9 +59,11 @@ export interface InputType {
   attaches?: InputAttaches;
   '@input'?: Function;
   props?: any;
+  inValue?: (value: any) => any;
+  outValue?: (value: any) => any;
 }
 
-export const GRegisteredTypes: {[name: string]: InputType}  = {}
+export const GRegisteredTypes: {[name: string]: InputType}  = {};
 
 export function register(aType: InputType) {
   GRegisteredTypes[aType.name] = aType;

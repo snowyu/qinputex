@@ -89,20 +89,31 @@ export class QInputEx extends Vue {
   protected nativeType: string = 'text';
   protected mask: string = '';
   protected rules: null|[string|Function] = null;
+  protected inValue?: (v: any) => any;
+  protected outValue?: (v: any) => any;
 
   created() {
     this.typeChanged(this.type);
-    this.iValue = this.value;
+    // this.iValue = this.value;
+    this.valueChanged(this.value);
   }
 
   @Watch('value')
   valueChanged(value: any) {
-    this.iValue = value;
+    console.log('TCL: QInputEx -> valueChanged -> value', value, this.inValue)
+    if (this.inValue) { value = this.inValue(value); }
+    if (this.iValue !== value) {
+      this.iValue = value;
+    }
   }
 
   @Watch('iValue')
   iValueChanged(value: any) {
-    this.$emit('input', value);
+    if (this.outValue) { value = this.outValue(value); }
+    console.log('TCL: QInputEx -> iValueChanged -> value', value, this.value)
+    if (value !== this.value) {
+      this.$emit('input', value);
+    }
   }
 
   clearType() {
@@ -127,6 +138,8 @@ export class QInputEx extends Vue {
     this.iType = aType;
     if (aType.mask) { this.mask = aType.mask; }
     if (aType.rules) { this.rules = aType.rules; }
+    this.inValue = aType.inValue;
+    this.outValue = aType.outValue;
     this.nativeType = aType.type;
     const vAttaches: any = this.attaches;
     if (aType.attaches) {
@@ -194,7 +207,7 @@ export class QInputEx extends Vue {
     if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
       Object.assign(popupAttrs, (attach.popup as any).attrs);
     }
-    const vCaption = (attach.popup as any).caption || this.type;
+    const vCaption = (attach.popup as any).caption || this.iType!.name;
     const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
