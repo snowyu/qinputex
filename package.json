@@ -1,6 +1,6 @@
 {
   "name": "qinputex",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "An Advance QInput for Quasar",
   "productName": "QInputEx",
   "author": "Riceball LEE <snowyu.lee@gmail.com>",
@@ -9,6 +9,7 @@
   "es2015": "dist/es2015/components/qinputex/index.js",
   "unpkg": "dist/umd/qinputex.min.js",
   "scripts": {
+    "prepublishOnly": "npm run build",
     "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
     "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015 && babel dist/es2015 -d dist/es2015",
     "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm && babel dist/esm -d dist/esm",
