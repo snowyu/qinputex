@@ -100,7 +100,6 @@ export class QInputEx extends Vue {
 
   @Watch('value')
   valueChanged(value: any) {
-    console.log('TCL: QInputEx -> valueChanged -> value', value, this.inValue)
     if (this.inValue) { value = this.inValue(value); }
     if (this.iValue !== value) {
       this.iValue = value;
@@ -110,7 +109,6 @@ export class QInputEx extends Vue {
   @Watch('iValue')
   iValueChanged(value: any) {
     if (this.outValue) { value = this.outValue(value); }
-    console.log('TCL: QInputEx -> iValueChanged -> value', value, this.value)
     if (value !== this.value) {
       this.$emit('input', value);
     }
@@ -249,12 +247,9 @@ export class QInputEx extends Vue {
     if (attach.name) {
       const vNodeData = {} as any;
       const vCompName = typeof attach.name  === 'string' ? attach.name : attach.name.name;
-			// console.log('TCL: QInputEx -> vCompName', hyphenate(vCompName))
       const vCompAttrs = this.$attrs && this.$attrs[hyphenate(vCompName)];
       vNodeData.props = Object.assign({}, attach.props, vCompAttrs);
-			// console.log('TCL: QInputEx -> vNodeData.props', vNodeData.props)
       vNodeData.attrs = Object.assign({}, attach.attrs, vCompAttrs);
-			// console.log('TCL: QInputEx -> vNodeData.attrs', vNodeData.attrs)
       if (attach.on) {
         const vOn = {} as any;
         Object.keys(attach.on).forEach(name => {
@@ -298,7 +293,6 @@ export class QInputEx extends Vue {
           });
         }
         if (vSlot && vSlotAfterAttach) { result.push(vSlot(props)); }
-				// // console.log('TCL: QInputEx -> protected__genAttach -> name', name, result)
 
         return result;
       };

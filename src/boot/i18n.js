@@ -24,5 +24,4 @@ export default async ({ app, Vue }) => {
     }
   }
   Quasar.lang.set(lang.default);
-  console.log('getLocale',Quasar.lang.getLocale())
 }
