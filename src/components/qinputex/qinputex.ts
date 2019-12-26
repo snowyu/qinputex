@@ -38,9 +38,10 @@ InputType:
   * before,after, prepend/append: InputAttach
 */
 
+// import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
+import merge from 'lodash.merge';
 import { CreateElement, VNode } from 'vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-// import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 
 import { hyphenate } from './hyphenate';
 
@@ -78,6 +79,10 @@ export class QInputEx extends Vue {
   }
   // @Prop(String) icon!: string;
   @Prop() value!: string;
+  /**
+   * @property type string|InputType
+   *   InputType: can customize InputType, or override exits InputType via name.
+   */
   @Prop({default: 'text', type: [String, Object]}) type!: string|InputType;
   @Prop(Boolean) slotAfterAttach!: boolean;
   // @Prop(String) mask!: string;
@@ -155,7 +160,8 @@ export class QInputEx extends Vue {
 
   @Watch('type')
   typeChanged(value: string|InputType) {
-    const vInputType = typeof value === 'string' ? GRegisteredTypes[value] : value;
+    const vInputType = typeof value === 'string' ? GRegisteredTypes[value] :
+      value && value.name ? merge({}, GRegisteredTypes[value.name], value) : value;
     if (!vInputType) { throw new Error(`The input '${value}' type is not exists`); }
     this.clearType();
     this.cloneType(vInputType);

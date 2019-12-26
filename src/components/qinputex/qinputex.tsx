@@ -45,6 +45,7 @@ InputType:
   * before,after, prepend/append: InputAttach
 */
 
+import merge from 'lodash.merge';
 import { CreateElement, VNode } from 'vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 // import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
@@ -153,7 +154,8 @@ export class QInputEx extends Vue {
 
   @Watch('type')
   typeChanged(value: string|InputType) {
-    const vInputType = typeof value === 'string' ? GRegisteredTypes[value] : value;
+    const vInputType = typeof value === 'string' ? GRegisteredTypes[value] :
+      value && value.name ? merge({}, GRegisteredTypes[value.name], value) : value;
     if (!vInputType) { throw new Error(`The input '${value}' type is not exists`); }
     this.clearType();
     this.cloneType(vInputType);

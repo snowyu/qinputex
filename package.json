@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
-    "flag-icon-css": "^3.4.5"
+    "flag-icon-css": "^3.4.5",
+    "lodash.merge": "^4.6.2"
   },
   "peerDependencies": {
     "quasar": ">=1",
@@ -51,6 +52,7 @@
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^1.0.0-beta.10",
     "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.8",
     "@quasar/quasar-app-extension-testing-security": "^1.0.0-alpha.8",
+    "@types/lodash.merge": "^4.6.6",
     "@types/node": "11.9.5",
     "@vue/babel-plugin-transform-vue-jsx": "^1.0.0",
     "@vue/babel-preset-jsx": "^1.0.0",
