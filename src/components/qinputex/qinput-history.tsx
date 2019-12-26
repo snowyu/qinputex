@@ -51,7 +51,6 @@ export class QInputHistory extends Vue {
 
   removeItem(aItems: InputHistoryItem[], index: number) {
     this.$emit('removed', aItems.splice(index, 1), aItems);
-		// console.log('TCL: QInputHistory -> removeItem -> aItems', aItems)
   }
 
   __getHistories(aItems: InputHistoryItem[], removable = true) {
@@ -64,7 +63,7 @@ export class QInputHistory extends Vue {
 				// console.log('TCL: QInputHistory -> render -> this.$attrs', this.$attrs)
 				// console.log('TCL: QInputHistory -> render -> this.$props', this.$props)
         return <q-chip {...{props}} clickable
-          onRemove={(i: number) => this.removeItem(aItems, i)}
+          onRemove={() => this.removeItem(aItems, index)}
           onClick ={() => this.$emit('click', text, index, item)}
         >{text}</q-chip>;
       });
