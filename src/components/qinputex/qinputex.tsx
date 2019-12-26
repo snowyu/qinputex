@@ -65,6 +65,17 @@ register({name: 'text', type: 'text'});
 register({name: 'textarea', type: 'textarea'});
 register({name: 'number', type: 'number'});
 
+function bindObj(obj: any, that: any) {
+  if (obj) {
+    Object.keys(obj).forEach(k => {
+      if (typeof obj[k] === 'function') {
+        obj[k] = obj[k].bind(that);
+      }
+    });
+  }
+  return obj;
+}
+
 /**
  * The Advanced Input Component
  * text can be typed or selected.
@@ -99,6 +110,9 @@ export class QInputEx extends Vue {
   protected nativeType: string = 'text';
   protected mask: string = '';
   protected rules: null|[string|Function] = null;
+  protected inValue?: (v: any) => any;
+  protected outValue?: (v: any) => any;
+  protected props: any;
 
   created() {
     this.typeChanged(this.type);
@@ -137,7 +151,13 @@ export class QInputEx extends Vue {
     this.iType = aType;
     if (aType.mask) { this.mask = aType.mask; }
     if (aType.rules) { this.rules = aType.rules; }
+    this.inValue = aType.inValue;
+    this.outValue = aType.outValue;
     this.nativeType = aType.type;
+    const vProps = this.props = aType.props;
+    if (vProps) {
+      bindObj(vProps, this);
+    }
     const vAttaches: any = this.attaches;
     if (aType.attaches) {
       Object.keys(aType.attaches).forEach((attachName) => {
@@ -311,6 +331,8 @@ export class QInputEx extends Vue {
     const scopedSlots: any = {};
     const that = this;
     const onInput = this.iType!['@input'];
+    const vOn = Object.assign({}, this.iType!.on, this.$listeners);
+    if (vOn) { bindObj(vOn, this); }
     InternalInputAttachNames.forEach((name: any) => {
       this.__genAttach(h, name, scopedSlots);
     });
@@ -320,7 +342,7 @@ export class QInputEx extends Vue {
       props,
       attrs: {placeholder: props.placeholder},
       on: {
-        ...this.$listeners,
+        ...vOn,
         input: (value: any) => {
           if (typeof onInput === 'function') {
             onInput.call(that, value);
