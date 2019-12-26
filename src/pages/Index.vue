@@ -40,7 +40,6 @@
           q-input-ex(ref="custom" :type=`{
             name: 'custom',
             caption: 'date',
-            mask: '####-##-##T##:##:##Z',
             type: 'tel',
             attaches: {
               prepend: [
@@ -67,7 +66,7 @@
                   },
                 }
               ],
-              append: {
+              after: {
                 icon: 'colorize',
                 popup: {
                   name: 'QColor',
