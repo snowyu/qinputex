@@ -6,8 +6,14 @@
         //- q-item-section(avatar)
         //-   q-icon(name="input" color="primary")
         q-item-section
-          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput"
-            :q-input-history="{icon: 'search', history: history, pinHistory:[{icon:'cake',value:'nicecake'}],maxHistory: 3}"
+          q-input-ex(ref="i" :type="type" :value="myValue" @input="onInput" @search="onSearch"
+            :q-input-history=`{
+              icon: 'search', history: history,
+              pinHistory:[
+                {icon:'cake',value:'nice cake'},
+                {icon:'phone',value:'telphone'},
+              ],
+              maxHistory: 3}`
             :with-seconds='type==="datetime"'
             :slots="{replaced: ['append']}"
           )
@@ -114,7 +120,10 @@ export default {
   methods: {
     log(){console.log.apply(console, arguments)},
     onInput: (v)=>{
-      console.log('qExt',v)
+      console.log('input',v)
+    },
+    onSearch: (v)=>{
+      console.log('search', v)
     },
     doPrevClick: function() {
       this.myValue = '';
