@@ -27,6 +27,18 @@ There are new two external slots in the `QInputEx` component:
 * `top`: the slot on the top of QInput Component
 * `bottom`: the slot on the bottom of QInput Component
 
+new properties:
+
+* `type` *string|InputType*
+  * `string`: the exists(registered) input type name.
+  * `InputType`: customize input type or override exists InputType.
+    * name *string* : it will override the exists InputType if the name is exists
+* `slots`: (TODO: not done)
+  * `replaced`: `{'slotName': true } | 'slotName' | ['slotName', ...]`
+    * replaced the original attach slot, not insert to the original attach slot if true.
+  * `afterAttach`: `{'slotName': true } | 'slotName' | ['slotName', ...]`
+    * the user defined slot will be inserted after the original attach slot if true.
+
 The `qinputex/dist/` is output for `es2015`, `esm`, `umd`, `cjs`.
 
 `require('qinputex/dist/es2015/components/qinputex/qinputex')` will only register the basic input types(text, textarea, number) to `QInputEx`.
