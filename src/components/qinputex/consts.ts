@@ -59,6 +59,7 @@ export interface InputType {
   attaches?: InputAttaches;
   '@input'?: Function;
   props?: any;
+  on?: any;
   inValue?: (value: any) => any;
   outValue?: (value: any) => any;
 }
