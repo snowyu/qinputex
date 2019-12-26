@@ -16,19 +16,33 @@ function indexOf(that: InputHistoryItem[], aValue: string): number {
 export const SearchInput: InputType = {
   name: 'search',
   type: 'text',
+  on: {
+    keyup(this: any, event: KeyboardEvent) {
+      if (event.keyCode === 13) {
+        this.props.search();
+      }
+    },
+  },
+  props: {
+    search(this: any) {
+      const value = this.iValue;
+      const vInputHis = this.$attrs['q-input-history'];
+      const vHistory =  vInputHis && vInputHis.history;
+      const vPinHistory = vInputHis && vInputHis.pinHistory;
+      if (value) {
+        if (vHistory && indexOf(vHistory, value) === -1 && (!vPinHistory || indexOf(vPinHistory, value) === -1)) {
+          vHistory.unshift(value);
+        }
+        // console.log('search', value)
+        this.$emit('search', value);
+      }
+    },
+  },
   attaches: {
     after: {
       icon: 'search',
-      click() {
-        const that = this as any;
-        const value = that.iValue;
-        const vHistory = that.$attrs['q-input-history'] && that.$attrs['q-input-history'].history;
-        if (value) {
-          if (vHistory && indexOf(vHistory, value) === -1) {
-            vHistory.unshift(value);
-          }
-          that.$emit('search', value);
-        }
+      click(this: InputType) {
+        this.props.search();
       },
     },
     bottom: {
@@ -38,7 +52,11 @@ export const SearchInput: InputType = {
       },
       on: {
         click(text: string, index: number) {
-          this.iValue = text;
+          if (text !== this.iValue) {
+            this.iValue = text;
+            // this.props.search();
+          }
+          this.focus();
         },
       },
     },
