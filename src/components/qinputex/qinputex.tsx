@@ -108,7 +108,7 @@ export class QInputEx extends Vue {
   protected iType: null|InputType = null;
   protected attaches: InputAttaches = {};
   protected nativeType: string = 'text';
-  protected mask: string = '';
+  protected mask: undefined|string = '';
   protected rules: null|[string|Function] = null;
   protected inValue?: (v: any) => any;
   protected outValue?: (v: any) => any;
@@ -149,8 +149,8 @@ export class QInputEx extends Vue {
 
   cloneType(aType: InputType) {
     this.iType = aType;
-    if (aType.mask) { this.mask = aType.mask; }
-    if (aType.rules) { this.rules = aType.rules; }
+    this.mask = this.$attrs.mask || aType.mask;
+    this.rules = (this.$attrs.rules as any) || aType.rules;
     this.inValue = aType.inValue;
     this.outValue = aType.outValue;
     this.nativeType = aType.type;
