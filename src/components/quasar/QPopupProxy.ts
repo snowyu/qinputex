@@ -1,5 +1,5 @@
 import { QPopupProxy as Comp } from 'quasar';
-import * as tsx from "vue-tsx-support";
+import * as tsx from 'vue-tsx-support';
 
 interface Props {
   breakpoint?: number|string;
@@ -23,4 +23,3 @@ interface Events {
 }
 
 export const QPopupProxy = tsx.ofType<Props, Events, ScopedSlots>().convert(Comp);
-

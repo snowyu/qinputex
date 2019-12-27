@@ -17,6 +17,7 @@
     ],
     "member-access": false,
     "no-console": true,
+    "no-empty-interface": false,
     "arrow-parens": false,
     "object-literal-key-quotes": false,
     // Pending fix for shorthand property names.

@@ -1,37 +1,37 @@
 import { QBtn as Comp } from 'quasar';
-import * as tsx from "vue-tsx-support";
+import * as tsx from 'vue-tsx-support';
 
 interface Props {
-  ripple? : boolean | any
-  type? : string
-  to? : string | any
-  replace? : boolean
-  label? : string | number
-  icon? : string
-  iconRight? : string
-  round? : boolean
-  outline? : boolean
-  flat? : boolean
-  unelevated? : boolean
-  rounded? : boolean
-  push? : boolean
-  glossy? : boolean
-  size? : string
-  fab? : boolean
-  fabMini? : boolean
-  color? : string
-  textColor? : string
-  noCaps? : boolean
-  noWrap? : boolean
-  dense? : boolean
-  tabindex? : number | string
-  align? : string
-  stack? : boolean
-  stretch? : boolean
-  loading? : boolean
-  disable? : boolean
-  percentage? : number
-  darkPercentage? : boolean
+  ripple?: boolean | any;
+  type?: string;
+  to?: string | any;
+  replace?: boolean;
+  label?: string | number;
+  icon?: string;
+  iconRight?: string;
+  round?: boolean;
+  outline?: boolean;
+  flat?: boolean;
+  unelevated?: boolean;
+  rounded?: boolean;
+  push?: boolean;
+  glossy?: boolean;
+  size?: string;
+  fab?: boolean;
+  fabMini?: boolean;
+  color?: string;
+  textColor?: string;
+  noCaps?: boolean;
+  noWrap?: boolean;
+  dense?: boolean;
+  tabindex?: number | string;
+  align?: string;
+  stack?: boolean;
+  stretch?: boolean;
+  loading?: boolean;
+  disable?: boolean;
+  percentage?: number;
+  darkPercentage?: boolean;
 }
 
 interface ScopedSlots {
@@ -51,4 +51,3 @@ interface Events {
 }
 
 export const QBtn = tsx.ofType<Props, Events, ScopedSlots>().convert(Comp);
-

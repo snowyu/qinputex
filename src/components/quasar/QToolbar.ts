@@ -1,5 +1,5 @@
 import { QToolbar as Comp, QToolbarTitle as Title } from 'quasar';
-import * as tsx from "vue-tsx-support";
+import * as tsx from 'vue-tsx-support';
 
 interface Props {
   inset?: boolean;
@@ -8,7 +8,6 @@ interface Props {
 interface TitleProps {
   shrink?: boolean;
 }
-
 
 interface ScopedSlots {
   default: any;

@@ -1,5 +1,5 @@
 import { QCard as Comp, QCardSection as CompSection } from 'quasar';
-import * as tsx from "vue-tsx-support";
+import * as tsx from 'vue-tsx-support';
 
 interface Props {
   dark?: boolean;
@@ -13,7 +13,6 @@ interface SectionProps {
   vertical?: boolean;
 }
 
-
 interface ScopedSlots {
   default: any;
 }
@@ -21,7 +20,6 @@ interface ScopedSlots {
 interface Events {
 }
 
-
 export const QCard = tsx.ofType<Props, Events, ScopedSlots>().convert(Comp);
 
-export const QCardSection =tsx.ofType<SectionProps, Events, ScopedSlots>().convert(CompSection);
+export const QCardSection = tsx.ofType<SectionProps, Events, ScopedSlots>().convert(CompSection);
