@@ -118,7 +118,7 @@ export class QInputEx extends Vue {
   @Watch('value')
   valueChanged(value: any) {
     if (this.inValue) { value = this.inValue(value); }
-    if (this.iValue !== value) {
+    if (String(this.iValue) !== String((value)) {
       this.iValue = value;
     }
   }
@@ -126,7 +126,7 @@ export class QInputEx extends Vue {
   @Watch('iValue')
   iValueChanged(value: any) {
     if (this.outValue) { value = this.outValue(value); }
-    if (value !== this.value) {
+    if (String((value) !== String((this.value)) {
       this.$emit('input', value);
     }
   }
