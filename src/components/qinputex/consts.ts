@@ -4,12 +4,17 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' |
   'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
+export type TInputFunc = (value: any) => void;
+export type TValueFunc = (value: any) => any;
+export type TClickEvent = (evt: MouseEvent) => void;
+export type TRuleFunc = (value: any) => boolean|string;
+
 export interface InputPopupObject {
   name: string; // the Component name to popup
   caption?: string;
   attrs?: any;
-  '@input'?: Function;
-  'toValue'?: Function;
+  '@input'?: TInputFunc;
+  'toValue'?: TValueFunc;
 }
 
 export type InputPopup = string|InputPopupObject;
@@ -24,7 +29,7 @@ export interface InputComponentAttach {
 export interface InputIconAttach {
   icon?: string;
   caption?: string;
-  click?: Function;
+  click?: TClickEvent;
   popup?: InputPopup;
   attrs?: any;
 }
@@ -55,9 +60,9 @@ export interface InputType {
   type: NativeInputType;
   value?: any; // the default value
   mask?: string;
-  rules?: [string|Function];
+  rules?: [string|TRuleFunc];
   attaches?: InputAttaches;
-  '@input'?: Function;
+  '@input'?: TInputFunc;
   props?: any;
   on?: any;
   inValue?: (value: any) => any;

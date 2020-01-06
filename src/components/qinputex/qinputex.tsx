@@ -59,6 +59,7 @@ import {
   GRegisteredTypes, InputAttach, InputAttaches, InputAttachName,
   InputIconAttach, InputPopup, InputType,
   InternalInputAttachNames, register,
+  TRuleFunc,
 } from './consts';
 
 register({name: 'text', type: 'text'});
@@ -109,7 +110,7 @@ export class QInputEx extends Vue {
   protected attaches: InputAttaches = {};
   protected nativeType: string = 'text';
   protected mask: undefined|string = '';
-  protected rules: null|[string|Function] = null;
+  protected rules: null|[string|TRuleFunc] = null;
   protected inValue?: (v: any) => any;
   protected outValue?: (v: any) => any;
   protected props: any;
