@@ -75,6 +75,13 @@ export const DateTimeInput: InputType = {
           attrs: {
             mask: 'YYYY-MM-DD HH:mm:ss',
           },
+          on: {
+            input(value: string, reason: string, detail: any, attach: any) {
+              if (this.$attrs.smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
+                attach.popup.hide();
+              }
+            },
+          },
           /*
           'toValue'(value: any) {
             // convert the value of the input box to the popup component
@@ -103,6 +110,13 @@ export const DateTimeInput: InputType = {
           caption: 'time',
           attrs: {
             mask: 'YYYY-MM-DD HH:mm:ss',
+          },
+          on: {
+            input(value: string, reason: string, detail: any, attach: any) {
+              if (this.$attrs.smartClosed !== false) {
+                attach.popup.hide();
+              }
+            },
           },
           /*
           toValue(value: any) {

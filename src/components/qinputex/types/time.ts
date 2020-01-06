@@ -11,6 +11,13 @@ export const TimeInput: InputType = {
       popup: {
         ref: 'time',
         name: 'QTime',
+        on: {
+          input(value: string, reason: string, detail: any, attach: any) {
+            if (this.$attrs.smartClosed !== false) {
+              attach.popup.hide();
+            }
+          },
+        },
       },
 
     },

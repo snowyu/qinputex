@@ -14,8 +14,14 @@ export const TimeInput: InputType = {
         attrs: {
           'with-seconds': true,
         },
+        on: {
+          input(value: string, reason: string, detail: any, attach: any) {
+            if (this.$attrs.smartClosed !== false) {
+              attach.popup.hide();
+            }
+          },
+        },
       },
-
     },
   },
 };

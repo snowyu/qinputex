@@ -40,7 +40,7 @@
           q-btn(@click="doNextClick" label="next")
       q-item
         q-item-section
-          q-input-ex(type="datetime" value="2012-01-01T12:33:22" @input="log('dt=', $event)")
+          q-input-ex(type="datetime" todayBtn :smartClosed="false" value="2012-01-01T12:33:22" @input="log('dt=', $event)")
       q-item
         //- @click="$refs.custom.getPopup('date').show()"
         q-item-section

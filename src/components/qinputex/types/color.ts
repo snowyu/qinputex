@@ -10,7 +10,6 @@ export const ColorInput: InputType = {
         ref: 'color',
         name: 'QColor',
       },
-
     },
   },
 };

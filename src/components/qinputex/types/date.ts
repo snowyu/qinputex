@@ -25,8 +25,15 @@ export const DateInput: InputType = {
         name: 'QDate',
         // attrs: {
         //   'default-year-month': getCurrentYM()
-        // }
-      },
+        // },
+        on: {
+          input(value: string, reason: string, detail: any, attach: any) {
+            if (this.$attrs.smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
+              attach.popup.hide();
+            }
+          },
+        },
+    },
 
     },
   },
