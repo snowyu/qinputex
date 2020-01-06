@@ -123,9 +123,18 @@ export const DateInput: InputType = {
     'append': {
       icon: 'event',
       popup: {
+        ref: 'date',
         name: 'QDate',
         attrs: {
           'default-year-month': getCurrentYM()
+        },
+        on: {
+          input(value, reason, detail, attach) {
+            // close the popup.
+            if (['day', 'today'].indexOf(reason) !== -1) attach.popup.hide();
+            // if you wanna change the value here:
+            return value;
+          }
         }
       }
 

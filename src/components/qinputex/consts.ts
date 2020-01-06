@@ -1,10 +1,24 @@
+import { QPopupProxy } from 'quasar';
 import { VueConstructor } from 'vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' |
   'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
-export type TInputFunc = (value: any) => void;
+export interface AttachComp {
+  attach: InputAttach;
+  component?: Vue;
+  popup?: QPopupProxy;
+}
+
+/**
+ * @returns the new input value if any
+ */
+export type TInputAttachFunc = (value: any, reason?: string, detail?: any, attach?: AttachComp) => void|any;
+/**
+ * @returns the new input value if any
+ */
+export type TInputFunc = (value: any, reason?: string, detail?: any, inputComp?: Vue) => void|any;
 export type TValueFunc = (value: any) => any;
 export type TClickEvent = (evt: MouseEvent) => void;
 export type TRuleFunc = (value: any) => boolean|string;
@@ -14,18 +28,19 @@ export interface InputPopupObject {
   ref?: string;
   caption?: string;
   attrs?: any;
-  '@input'?: TInputFunc;
+  '@input'?: TInputAttachFunc;
   'toValue'?: TValueFunc;
+  on?: any;
 }
 
 export type InputPopup = string|InputPopupObject;
 
-export interface InputComponentAttach {
-  name: string|VueConstructor<Vue>;
-  props?: any;
-  attrs?: any;
-  on?: any;
-}
+// export interface InputComponentAttach {
+//   name: string|VueConstructor<Vue>;
+//   props?: any;
+//   attrs?: any;
+//   on?: any;
+// }
 
 export interface InputIconAttach {
   icon?: string;

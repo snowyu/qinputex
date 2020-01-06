@@ -118,6 +118,9 @@ export class QInputEx extends Vue {
   protected outValue?: (v: any) => any;
   protected props: any;
 
+  private mReason: any;
+  private mDetail: any;
+
   created() {
     this.typeChanged(this.type);
     this.iValue = this.value;
@@ -130,7 +133,7 @@ export class QInputEx extends Vue {
 
   @Watch('iValue')
   iValueChanged(value: any) {
-    this.$emit('input', value);
+    this.$emit('input', value, this.mReason, this.mDetail);
   }
 
   clearType() {
@@ -226,6 +229,7 @@ export class QInputEx extends Vue {
 
   // render helper functions:
   protected __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
+    const that = this;
     const vPopup: any = attach.popup;
     const toValue = vPopup.toValue;
     const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
@@ -239,18 +243,31 @@ export class QInputEx extends Vue {
     const vCompAttrs: any = Object.assign({value: vValue, filled: true}, this.$attrs);
     const vComp = this.getPopupComponent(vPopup);
     const vCaption = vPopup.caption || this.iType!.name;
-    const onInput = vPopup['@input'];
-    const vCompData: any = {
+    const vOn = Object.assign({}, vPopup.on);
+    const onInput = vOn.input || vPopup['@input'];
+    delete vOn.input;
+    bindObj(vOn, this);
+    vOn.input = function(value: any, reason: any, detail: any) {
+      if (typeof reason === 'object') {
+        detail = reason;
+        reason = '';
+      }
+      reason = reason || vPopup.ref || that.iType!.name;
+      that.mReason = reason;
+      that.mDetail = detail;
+      if (typeof onInput === 'function') {
+        const v: any = onInput.call(that, value, reason, detail, {
+          attach,
+          component: vCompEl.componentInstance,
+          popup: vPopupEl.componentInstance,
+        });
+        if (v !== undefined) { value = v; }
+      }
+      that.iValue = value;
+    };
+    const vCompData: VNodeData = {
       props: vCompAttrs,
-      on: {
-        input: (value: any) => {
-          if (typeof onInput === 'function') {
-            onInput.call(this, value);
-          } else {
-            this.iValue = value;
-          }
-        },
-      },
+      on: vOn,
     };
 
     if (typeof vPopup === 'object') {
@@ -262,7 +279,8 @@ export class QInputEx extends Vue {
         Object.assign(vCompAttrs, vPopup.attrs);
       }
     }
-    return (
+    const vCompEl = h(vComp, vCompData);
+    const vPopupEl = (
       <QPopupProxy {...vPopupData} >
         <QCard>
           <QToolbar>
@@ -279,16 +297,17 @@ export class QInputEx extends Vue {
             />
           </QToolbar>
           <QCardSection>
-            <vComp {...vCompData}
-            />
+            { vCompEl }
           </QCardSection>
         </QCard>
       </QPopupProxy>
     );
+    return vPopupEl;
   }
   protected __getAttach(h: CreateElement, attach: InputAttach): VNode {
     let result: any;
     if (attach.name) {
+      // custom attach component
       const vNodeData = {} as any;
       const vCompName = typeof attach.name  === 'string' ? attach.name : attach.name.name;
 			// console.log('TCL: QInputEx -> vCompName', hyphenate(vCompName))
@@ -298,12 +317,8 @@ export class QInputEx extends Vue {
       vNodeData.attrs = Object.assign({}, attach.attrs, vCompAttrs);
 			// console.log('TCL: QInputEx -> vNodeData.attrs', vNodeData.attrs)
       if (attach.on) {
-        const vOn = {} as any;
-        Object.keys(attach.on).forEach(name => {
-          if (typeof attach.on[name] === 'function') {
-            vOn[name] = attach.on[name].bind(this);
-          }
-        });
+        const vOn = Object.assign({}, attach.on);
+        bindObj(vOn, this);
         vNodeData.on = vOn;
       }
       result = h(attach.name, vNodeData);
@@ -356,29 +371,37 @@ export class QInputEx extends Vue {
     const props = Object.assign({}, defaultAttrs, this.$attrs);
     const scopedSlots: any = {};
     const that = this;
-    const onInput = this.iType!['@input'];
     const vOn = Object.assign({}, this.iType!.on, this.$listeners);
+    const onInput = vOn.input || this.iType!['@input'];
+    delete vOn.input;
     if (vOn) { bindObj(vOn, this); }
+    if (typeof onInput === 'function') {
+      vOn.input = function(value: any, reason: any, detail: any) {
+        if (typeof reason === 'object') {
+          detail = reason;
+          reason = '';
+        }
+        reason = reason || 'inputBox';
+        that.mReason = reason;
+        that.mDetail = detail;
+        if (typeof onInput === 'function') {
+          const v = onInput.call(that, value, reason, detail, vInputBoxEl.componentInstance);
+          if (v !== undefined) { value = v; }
+        }
+        that.iValue = value;
+      };
+    }
     InternalInputAttachNames.forEach((name: any) => {
       this.__genAttach(h, name, scopedSlots);
     });
 
-    return h(vComp, {
+    const vInputBoxEl = h(vComp, {
       ref: 'inputBox',
       props,
       attrs: {placeholder: props.placeholder},
-      on: {
-        ...vOn,
-        input: (value: any) => {
-          if (typeof onInput === 'function') {
-            onInput.call(that, value);
-          } else {
-            this.iValue = value;
-          }
-        },
-      },
+      on: vOn,
       scopedSlots,
     });
+    return vInputBoxEl;
   }
-
 }

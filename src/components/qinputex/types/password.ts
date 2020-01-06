@@ -9,10 +9,10 @@ const PasswordInput: InputType = {
     },
     append: {
       icon: 'visibility',
-      click() {
-        const vIsVisiblePwd = (this as any).isVisiblePwd = !(this as any).isVisiblePwd;
-        (this as any).attaches.append.icon = vIsVisiblePwd ? 'visibility_off' : 'visibility';
-        (this as any).nativeType = vIsVisiblePwd ? 'text' : 'password';
+      click(this: any) {
+        const vIsVisiblePwd = this.isVisiblePwd = !this.isVisiblePwd;
+        this.attaches.append.icon = vIsVisiblePwd ? 'visibility_off' : 'visibility';
+        this.nativeType = vIsVisiblePwd ? 'text' : 'password';
       },
     },
   },

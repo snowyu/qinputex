@@ -42,9 +42,10 @@
         q-item-section
           q-input-ex(type="datetime" value="2012-01-01T12:33:22" @input="log('dt=', $event)")
       q-item
+        //- @click="$refs.custom.getPopup('date').show()"
         q-item-section
           q-input-ex(
-            @click="$refs.custom.getPopup('date').show()"
+            @input="log"
             ref="custom"
             :rules="[v => /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/.test(v) || 'bad date']"
             mask="####-##-##T##:##:##"
@@ -61,9 +62,15 @@
                     name: 'QDate',
                     'caption': 'date',
                     attrs: {
+                      todayBtn: true,
                       mask: 'YYYY-MM-DDTHH:mm:ss',
                     //   'default-year-month': getCurrentYM()
-                    }
+                    },
+                    on: {
+                      input(v, reason, detail, attach) {
+                        if (['day', 'today'].indexOf(reason) !== -1) attach.popup.hide()
+                      },
+                    },
                   },
                 },
                 {
@@ -75,7 +82,12 @@
                     attrs: {
                       mask: 'YYYY-MM-DDTHH:mm:ss',
                       format24h: true,
-                    }
+                    },
+                    on: {
+                      input(v, reason, detail, attach) {
+                        attach.popup.hide()
+                      },
+                    },
                   },
                 }
               ],
