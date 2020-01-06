@@ -1,9 +1,9 @@
 // // why can not merge in .d.ts file?
-declare module 'quasar/dist/types/' {
-  interface QVueGlobals {
-    lang: any;
-  }
-}
+// declare module 'quasar/dist/types/' {
+//   interface QVueGlobals {
+//     lang: any;
+//   }
+// }
 
 /*
 高级文本输入框控件 The Advance Text QInputEx Component
@@ -46,7 +46,8 @@ InputType:
 */
 
 import merge from 'lodash.merge';
-import { CreateElement, VNode } from 'vue';
+import { QPopupProxy as QPopupProxyComp } from 'quasar';
+import { CreateElement, VNode, VNodeData } from 'vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 // import { QBtn, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle } from 'quasar';
 // import * as tsx from "vue-tsx-support";
@@ -65,6 +66,8 @@ import {
 register({name: 'text', type: 'text'});
 register({name: 'textarea', type: 'textarea'});
 register({name: 'number', type: 'number'});
+
+const popRefPrefix = 'pop';
 
 function bindObj(obj: any, that: any) {
   if (obj) {
@@ -194,6 +197,10 @@ export class QInputEx extends Vue {
     this.inputBox.focus();
   }
 
+  getPopup(aName: string) {
+    return this.$refs[popRefPrefix + aName] as QPopupProxyComp;
+  }
+
   render(h: CreateElement): VNode {
     const scopedSlots: any = {};
     ExternalInputAttachNames.forEach((name: any) => {
@@ -219,19 +226,44 @@ export class QInputEx extends Vue {
 
   // render helper functions:
   protected __getPopup(h: CreateElement, attach: InputIconAttach): VNode {
-    const toValue = (attach.popup as any).toValue;
+    const vPopup: any = attach.popup;
+    const toValue = vPopup.toValue;
     const vValue = typeof toValue === 'function' ? toValue.call(this, this.iValue) : this.iValue;
-    const popupAttrs: any = Object.assign({value: vValue, filled: true}, this.$attrs);
-    const vComp = this.getPopupComponent(attach.popup);
-    if (typeof attach.popup !== 'string' && attach.popup!.attrs) {
-      Object.assign(popupAttrs, (attach.popup as any).attrs);
-    }
-    const vCaption = (attach.popup as any).caption || this.iType!.name;
-    const onInput = (attach.popup as any)['@input'];
     // type: 'dialog',
     // breakpoint: 800, maxHeight: '99vh', cover: false
+    // , 'max-height':'480px'
+    // {staticStyle: {'width': '100%', 'height': '800px'}},
+    const vPopupData: any = {
+      props: {maxHeight: '100vh', breakpoint: 800},
+    };
+    const vCompAttrs: any = Object.assign({value: vValue, filled: true}, this.$attrs);
+    const vComp = this.getPopupComponent(vPopup);
+    const vCaption = vPopup.caption || this.iType!.name;
+    const onInput = vPopup['@input'];
+    const vCompData: any = {
+      props: vCompAttrs,
+      on: {
+        input: (value: any) => {
+          if (typeof onInput === 'function') {
+            onInput.call(this, value);
+          } else {
+            this.iValue = value;
+          }
+        },
+      },
+    };
+
+    if (typeof vPopup === 'object') {
+      if (vPopup.ref) {
+        vPopupData.ref = popRefPrefix + vPopup.ref;
+        vCompData.ref = vPopup.ref;
+      }
+      if (vPopup.attrs) {
+        Object.assign(vCompAttrs, vPopup.attrs);
+      }
+    }
     return (
-      <QPopupProxy maxHeight='100vh' breakpoint={800}>
+      <QPopupProxy {...vPopupData} >
         <QCard>
           <QToolbar>
             <QBtn flat={true} round={true} icon={attach.icon} />
@@ -247,14 +279,7 @@ export class QInputEx extends Vue {
             />
           </QToolbar>
           <QCardSection>
-            <vComp {...{props: popupAttrs}}
-              onInput={(value: any) => {
-                if (typeof onInput === 'function') {
-                  onInput.call(this, value);
-                } else {
-                  this.iValue = value;
-                }
-              }}
+            <vComp {...vCompData}
             />
           </QCardSection>
         </QCard>

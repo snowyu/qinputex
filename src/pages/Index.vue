@@ -43,7 +43,12 @@
           q-input-ex(type="datetime" value="2012-01-01T12:33:22" @input="log('dt=', $event)")
       q-item
         q-item-section
-          q-input-ex(ref="custom" :rules="[v => /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/.test(v) || 'bad date']" mask="####-##-##T##:##:##" :type=`{
+          q-input-ex(
+            @click="$refs.custom.getPopup('date').show()"
+            ref="custom"
+            :rules="[v => /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/.test(v) || 'bad date']"
+            mask="####-##-##T##:##:##"
+            :type=`{
             name: 'custom',
             caption: 'date',
             type: 'tel',
@@ -52,6 +57,7 @@
                 {
                   icon: 'event',
                   popup: {
+                    ref: 'date',
                     name: 'QDate',
                     'caption': 'date',
                     attrs: {
@@ -63,6 +69,7 @@
                 {
                   icon: 'access_time',
                   popup: {
+                    ref: 'time',
                     'name': 'QTime',
                     'caption': 'time',
                     attrs: {

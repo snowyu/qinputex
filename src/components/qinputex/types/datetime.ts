@@ -69,6 +69,7 @@ export const DateTimeInput: InputType = {
       {
         icon: 'event',
         popup: {
+          ref: 'date',
           name: 'QDate',
           caption: 'date',
           attrs: {
@@ -97,6 +98,7 @@ export const DateTimeInput: InputType = {
       {
         icon: 'access_time',
         popup: {
+          ref: 'time',
           name: 'QTime',
           caption: 'time',
           attrs: {

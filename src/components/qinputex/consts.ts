@@ -11,6 +11,7 @@ export type TRuleFunc = (value: any) => boolean|string;
 
 export interface InputPopupObject {
   name: string; // the Component name to popup
+  ref?: string;
   caption?: string;
   attrs?: any;
   '@input'?: TInputFunc;

@@ -21,6 +21,7 @@ export const DateInput: InputType = {
     append: {
       icon: 'event',
       popup: {
+        ref: 'date',
         name: 'QDate',
         // attrs: {
         //   'default-year-month': getCurrentYM()

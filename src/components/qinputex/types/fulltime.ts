@@ -9,6 +9,7 @@ export const TimeInput: InputType = {
     append: {
       icon: 'access_time',
       popup: {
+        ref: 'time',
         name: 'QTime',
         attrs: {
           'with-seconds': true,

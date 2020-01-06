@@ -7,6 +7,7 @@ export const ColorInput: InputType = {
     append: {
       icon: 'colorize',
       popup: {
+        ref: 'color',
         name: 'QColor',
       },
 
