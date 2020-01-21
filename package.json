@@ -30,7 +30,8 @@
     "audit:snyk": "snyk test --json > ./test/audits/snyk.json",
     "audit:node_modules": "yarn audit --json > ./test/audits/node_modules_audit.json",
     "audit:licenses": "nlf --summary detail > ./test/audits/licenses.txt",
-    "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
+    "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js",
+    "release": "npm run build && standard-version && git push --follow-tags origin master"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
@@ -72,6 +73,7 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-typescript2": "^0.20.1",
+    "standard-version": "^7.0.1",
     "strip-ansi": "=3.0.1",
     "ts-jest": "^24.0.0",
     "ts-loader": "^5.3.3",
