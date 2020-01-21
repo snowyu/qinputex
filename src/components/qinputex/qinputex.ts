@@ -92,6 +92,14 @@ export class QInputEx extends Vue {
     const inputBox: any = this.$refs.inputBox;
     return inputBox.$refs.input || inputBox.$refs.target;
   }
+
+  get focused() {
+    const input: any = this.$refs.inputBox;
+    const inputbox = this.inputBox;
+    const el = document.activeElement;
+    return (inputbox && inputbox === el) || (el && el.id === input.targetUid);
+  }
+
   // @Prop(String) icon!: string;
   @Prop() value!: string;
   /**
