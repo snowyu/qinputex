@@ -366,10 +366,10 @@ export class QInputEx extends Vue {
   protected __render(h: CreateElement): VNode {
     const defaultAttrs = {
       filled: true, mask: this.mask, rules: this.rules, type: this.nativeType,
-      value: this.iValue,
+      // value: this.iValue,
     };
     const vComp = this.getComponent();
-    const props = Object.assign({}, defaultAttrs, this.$attrs);
+    const props = Object.assign({}, defaultAttrs, this.$attrs, {value: this.iValue});
     const scopedSlots: any = {};
     const that = this;
     const vOn = Object.assign({}, this.iType!.on, this.$listeners);
