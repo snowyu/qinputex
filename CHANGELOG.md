@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/snowyu/qinputex/compare/v0.4.2...v0.4.3) (2020-01-25)
+
+
+### Bug Fixes
+
+* datetime component can not show value correctly ([91dcbf6](https://github.com/snowyu/qinputex/commit/91dcbf645401e6cb8bd9d805d79f29aeab702208))
+
 ### [0.4.2](https://github.com/snowyu/qinputex/compare/v0.1.1...v0.4.2) (2020-01-21)
 
 
