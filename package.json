@@ -73,7 +73,7 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-typescript2": "^0.20.1",
-    "standard-version": "^7.0.1",
+    "standard-version": "^8.0.1",
     "strip-ansi": "=3.0.1",
     "ts-jest": "^24.0.0",
     "ts-loader": "^5.3.3",
