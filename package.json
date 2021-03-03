@@ -64,7 +64,7 @@
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^1.0.3",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "quasar": "^1.9.13",
     "rollup": "^1.7.0",
