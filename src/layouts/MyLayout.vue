@@ -13,7 +13,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          Quasar App
+          QInputEx Demo - Quasar v2
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -27,14 +27,14 @@
           clickable
           tag="a"
           target="_blank"
-          href="http://v1.quasar-framework.org"
+          href="https://quasar.dev"
         >
           <q-item-section avatar>
             <q-icon name="school" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Docs</q-item-label>
-            <q-item-label caption>v1.quasar-framework.org</q-item-label>
+            <q-item-label caption>quasar.dev</q-item-label>
           </q-item-section>
         </q-item>
         <q-item
@@ -55,28 +55,28 @@
           clickable
           tag="a"
           target="_blank"
-          href="http://chat.quasar-framework.org"
+          href="https://chat.quasar.dev"
         >
           <q-item-section avatar>
             <q-icon name="chat" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar-framework.org</q-item-label>
+            <q-item-label caption>chat.quasar.dev</q-item-label>
           </q-item-section>
         </q-item>
         <q-item
           clickable
           tag="a"
           target="_blank"
-          href="https://forum.quasar-framework.org"
+          href="https://forum.quasar.dev"
         >
           <q-item-section avatar>
             <q-icon name="record_voice_over" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Forum</q-item-label>
-            <q-item-label caption>forum.quasar-framework.org</q-item-label>
+            <q-item-label caption>forum.quasar.dev</q-item-label>
           </q-item-section>
         </q-item>
         <q-item
@@ -102,20 +102,12 @@
   </q-layout>
 </template>
 
-<script>
-import { openURL } from "quasar";
+<script setup>
+import { ref } from 'vue'
+import { useQuasar } from 'quasar'
 
-export default {
-  name: "MyLayout",
-  data() {
-    return {
-      leftDrawerOpen: this.$q.platform.is.desktop
-    };
-  },
-  methods: {
-    openURL
-  }
-};
+const $q = useQuasar()
+const leftDrawerOpen = ref($q.platform.is.desktop)
 </script>
 
 <style></style>

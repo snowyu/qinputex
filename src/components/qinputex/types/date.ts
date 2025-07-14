@@ -23,13 +23,18 @@ export const DateInput: InputType = {
       popup: {
         ref: 'date',
         name: 'QDate',
-        // attrs: {
-        //   'default-year-month': getCurrentYM()
-        // },
+        attrs: {
+          'today-btn': true,
+          mask: 'YYYY/MM/DD',
+        },
         on: {
           input(value: string, reason: string, detail: any, attach: any) {
-            if (this.$attrs.smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
-              attach.popup.hide();
+            // In Quasar v2, we need to handle the popup close differently
+            // The smartClosed logic is preserved but adapted for v2
+            const attrs = (this as any).attrs || (this as any).$attrs || {};
+            if (attrs.smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
+              // For v2, we'll need to emit a close event instead
+              attach.popup?.hide?.();
             }
           },
         },

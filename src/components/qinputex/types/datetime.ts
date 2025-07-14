@@ -74,10 +74,14 @@ export const DateTimeInput: InputType = {
           caption: 'date',
           attrs: {
             mask: 'YYYY-MM-DD HH:mm:ss',
+            'today-btn': true,
           },
           on: {
-            input(value: string, reason: string, detail: any, attach: any) {
-              if (this.$attrs.smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
+            input(this: any, value: string, reason: string, detail: any, attach: any) {
+              // In Vue 3, we need to access $attrs from the component instance
+              // The 'this' context here refers to the component instance
+              const smartClosed = this.$attrs?.smartClosed;
+              if (smartClosed !== false && ['day', 'today'].indexOf(reason) !== -1) {
                 attach.popup.hide();
               }
             },
@@ -110,10 +114,16 @@ export const DateTimeInput: InputType = {
           caption: 'time',
           attrs: {
             mask: 'YYYY-MM-DD HH:mm:ss',
+            'format24h': true,
+            'with-seconds': true,
           },
           on: {
-            input(value: string, reason: string, detail: any, attach: any) {
-              if (this.$attrs.smartClosed !== false) {
+            input(this: any, value: string, reason: string, detail: any, attach: any) {
+              // For time picker, don't auto-close on input
+              // User should manually close or use the close button
+              // Only auto-close if explicitly requested
+              const smartClosed = this.$attrs?.smartClosed;
+              if (smartClosed === true && reason === 'close') {
                 attach.popup.hide();
               }
             },

@@ -1,13 +1,12 @@
 import { QPopupProxy } from 'quasar';
-import { VueConstructor } from 'vue';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component as VueComponent, DefineComponent } from 'vue';
 
 export type NativeInputType = 'password' | 'text' | 'textarea' | 'email' | 'search' | 'tel' |
   'file' | 'number' | 'url' | 'select' | 'date' | 'time';
 
 export interface AttachComp {
   attach: InputAttach;
-  component?: Vue;
+  component?: VueComponent;
   popup?: QPopupProxy;
 }
 
@@ -18,7 +17,7 @@ export type TInputAttachFunc = (value: any, reason?: string, detail?: any, attac
 /**
  * @returns the new input value if any
  */
-export type TInputFunc = (value: any, reason?: string, detail?: any, inputComp?: Vue) => void|any;
+export type TInputFunc = (value: any, reason?: string, detail?: any, inputComp?: VueComponent) => void|any;
 export type TValueFunc = (value: any) => any;
 export type TClickEvent = (evt: MouseEvent) => void;
 export type TRuleFunc = (value: any) => boolean|string;
@@ -36,7 +35,7 @@ export interface InputPopupObject {
 export type InputPopup = string|InputPopupObject;
 
 // export interface InputComponentAttach {
-//   name: string|VueConstructor<Vue>;
+//   name: string|DefineComponent;
 //   props?: any;
 //   attrs?: any;
 //   on?: any;
@@ -52,7 +51,7 @@ export interface InputIconAttach {
 
 // export type InputAttach = InputIconAttach | InputComponentAttach;
 export interface InputAttach extends InputIconAttach {
-  name?: string|VueConstructor<Vue>;
+  name?: string|DefineComponent|any;
   props?: any;
   on?: any;
   isAfter?: boolean;

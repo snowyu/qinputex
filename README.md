@@ -1,167 +1,224 @@
-# The Advance Input Component for Quasar@v1
+# QInputEx - Advanced Input Component for Quasar v2
 
-The Advance Input Component for Quasar is used as single-line input box for date, time, password, color, selete etc.
+An advanced input component for Quasar Framework v2 that provides enhanced input types including date, time, password, color, search, and more.
 
 ![](./doc/qinputex.gif)
 
-## Usage
+## Features
 
-Above Quasar@v1.0.0-beta.11.
+- 🎯 **Multiple Input Types**: date, time, datetime, fulltime, password, color, search, and more
+- 🔍 **Search with History**: Built-in search history management with pinned items
+- 📅 **Smart Date/Time Pickers**: Integrated with Quasar's QDate and QTime components
+- 🎨 **Color Picker**: Built-in color selection support
+- 🔐 **Password Toggle**: Show/hide password functionality
+- 🎰 **Custom Input Types**: Easy to create and register new input types
+- 💪 **TypeScript Support**: Full TypeScript support with type definitions
+- 🚀 **Vue 3 & Composition API**: Built for Vue 3 with Composition API
 
-You should enable these quasar components before used(`quasar.conf.js`):
+## Requirements
 
-QBtn, QIcon, QPopupProxy, QCard, QCardSection, QToolbar, QToolbarTitle,
-QInput, QSelect, QDate, QTime, QColor, QChip
+- Quasar v2.0.0+
+- Vue 3.0.0+
+- Vue I18n 9.0.0+
 
-The quasar directive: `close-popup`  and the `vue-i18n` plugin.
+## Installation
 
-There are four internal slots as the same as the `QInput` component:
+### As a Quasar App Extension (Recommended)
 
-* `before`
-* `prepend`
-* `append`
-* `after`
+```bash
+quasar ext add qinputex
+```
 
-There are new two external slots in the `QInputEx` component:
+This will handle all the setup automatically, including:
+- Installing the npm package
+- Registering components globally
+- Adding necessary boot files
+- Configuring your project
 
-* `top`: the slot on the top of QInput Component
-* `bottom`: the slot on the bottom of QInput Component
+### Manual Installation
 
-new properties:
+```bash
+npm install qinputex
+# or
+yarn add qinputex
+# or
+pnpm add qinputex
+```
 
-* `type` *string|InputType*
-  * `string`: the exists(registered) input type name.
-  * `InputType`: customize input type or override exists InputType.
-    * name *string* : it will override the exists InputType if the name is exists
-* `slots`: (TODO: not done)
-  * `replaced`: `{'slotName': true } | 'slotName' | ['slotName', ...]`
-    * replaced the original attach slot, not insert to the original attach slot if true.
-  * `afterAttach`: `{'slotName': true } | 'slotName' | ['slotName', ...]`
-    * the user defined slot will be inserted after the original attach slot if true.
+### Quasar Configuration
 
-The `qinputex/dist/` is output for `es2015`, `esm`, `umd`, `cjs`.
+Enable required Quasar components in your `quasar.config.js`:
 
-`require('qinputex/dist/es2015/components/qinputex/qinputex')` will only register the basic input types(text, textarea, number) to `QInputEx`.
-
-`require('qinputex/dist/es2015/')` will register all input types to `QInputEx`
-
-* text, textarea, number
-* color
-* date
-* datetime
-* fulltime
-* time
-* password: show password or not.
-* search:
-  * `search` event
-  * `q-input-history` as chips
-    * history: ['search history', 'history2', ...]
-    * pinHistory: fixed position
-      * [{icon:'cake',value:'some cake', textColor: 'white', color:'secondary'}],
-    * maxHistory: 3 the max history item to keep.
-    * icon: 'search' default chip icon.
-    * color: 'primary' default chip color,
-    * textColor: 'white' default chip text color...
-
-### Demo
-
-```tsx
-import { QInputEx, InputHistoryItem } from 'qinputex';
-import { Vue, Component, Prop, Mixins, Watch } from 'vue-property-decorator';
-import { VNode, CreateElement } from 'vue';
-
-@Component({
-  components: {
-    QInputEx,
-  }
-})
-export class MyApp extends Vue {
-  protected searchHistory: InputHistoryItem[] = [];
-  render(h: CreateElement) {
-    // return h(QInputEx, {props:{type: 'color', value: '#ff0000'}})
-    return <q-input-ex type="color" value="#ff0000"/>;
-    return <q-input-ex type="search"
-      onSearch={text: string => console.log(`search... ${text}`)}
-      q-input-history={{
-        history: this.searchHistory,
-        pinHistory:[{icon:'cake',value:'nice cake'}],
-        maxHistory: 3,
-        icon: 'search',
-        color: 'white',
-        textColor: 'black',
-      }}
-    />;
-  }
+```javascript
+framework: {
+  components: [
+    'QBtn',
+    'QIcon', 
+    'QPopupProxy',
+    'QCard',
+    'QCardSection',
+    'QToolbar',
+    'QToolbarTitle',
+    'QInput',
+    'QSelect',
+    'QDate',
+    'QTime',
+    'QColor',
+    'QChip'
+  ]
 }
 ```
 
-## Create a new input type
+## Usage
 
-It can register other input types more easy. such as the date type for QDate:
+### Basic Usage
 
-```ts
-import { QInputEx, register, InputType } from 'qinputex';
+```vue
+<template>
+  <q-input-ex v-model="value" type="date" />
+</template>
 
-function padStr(value: number, size: number = 2): string {
-  var s = String(value);
-  while (s.length < size) {s = "0" + s;}
-  return s;
+<script setup>
+import { ref } from 'vue'
+import { QInputEx } from 'qinputex'
+
+const value = ref('')
+</script>
+```
+
+### Available Input Types
+
+- `text` - Standard text input
+- `textarea` - Multi-line text input
+- `number` - Number input
+- `date` - Date picker (YYYY/MM/DD)
+- `time` - Time picker (HH:mm)
+- `fulltime` - Time picker with seconds (HH:mm:ss)
+- `datetime` - Combined date and time picker
+- `color` - Color picker
+- `password` - Password input with visibility toggle
+- `search` - Search input with history management
+
+### Search Input with History
+
+```vue
+<template>
+  <q-input-ex
+    v-model="searchValue"
+    type="search"
+    @search="handleSearch"
+    :q-input-history="{
+      history: searchHistory,
+      pinHistory: [
+        { icon: 'cake', value: 'Popular search 1' },
+        { icon: 'phone', value: 'Popular search 2' }
+      ],
+      maxHistory: 5,
+      icon: 'search',
+      color: 'primary',
+      textColor: 'white'
+    }"
+  />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { QInputEx } from 'qinputex'
+
+const searchValue = ref('')
+const searchHistory = ref([])
+
+const handleSearch = (value) => {
+  console.log('Searching for:', value)
+  // Add to history
+  if (!searchHistory.value.includes(value)) {
+    searchHistory.value.unshift(value)
+  }
 }
+</script>
+```
 
-function getCurrentYM() {
-  const vDate = new Date();
-  const result = vDate.getFullYear() + '/' + padStr(vDate.getMonth()+1, 2);
-  return result;
-}
+### Slots
 
-export const DateInput: InputType = {
-  name: 'date',
-  type: 'text',
+QInputEx supports all QInput slots plus two additional external slots:
+
+**Internal slots** (same as QInput):
+- `before`
+- `prepend`
+- `append`
+- `after`
+
+**External slots** (new):
+- `top` - Content above the input
+- `bottom` - Content below the input
+
+### Custom Input Types
+
+You can create and register custom input types:
+
+```javascript
+import { register } from 'qinputex'
+
+const CustomDateInput = {
+  name: 'custom-date',
+  type: 'tel',
   mask: 'date',
   rules: ['date'],
   attaches: {
-    'append': {
+    append: {
       icon: 'event',
       popup: {
-        ref: 'date',
         name: 'QDate',
         attrs: {
-          'default-year-month': getCurrentYM()
+          'today-btn': true,
+          mask: 'YYYY/MM/DD'
         },
         on: {
           input(value, reason, detail, attach) {
-            // close the popup.
-            if (['day', 'today'].indexOf(reason) !== -1) attach.popup.hide();
-            // if you wanna change the value here:
-            return value;
+            // Auto-close on date selection
+            if (['day', 'today'].includes(reason)) {
+              attach.popup?.hide()
+            }
+            return value
           }
         }
       }
-
     }
   }
 }
 
-const PasswordInput = {
-  name: 'password',
-  type: 'password',
-  attaches: {
-    'before': {
-      icon: 'vpn_key',
-    },
-    'append': {
-      icon: 'visibility',
-      click: function() {
-        this.isVisiblePwd = !this.isVisiblePwd;
-        this.attaches.append.icon = this.isVisiblePwd ? 'visibility_off' : 'visibility';
-        this.nativeType = this.isVisiblePwd ? 'text': 'password';
-      }
-    }
-  }
-}
-
-register(DateInput);
-register(PasswordInput);
+register(CustomDateInput)
 ```
 
+## Migration from Quasar v1
 
+If you're migrating from Quasar v1, please refer to the [Migration Guide](./MIGRATION_GUIDE.md).
+
+Key changes:
+- Use `v-model` instead of `:value` and `@input`
+- Vue 3 Composition API support
+- Updated event names (e.g., `@update:modelValue`)
+
+## Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start dev server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Run tests
+pnpm test
+```
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

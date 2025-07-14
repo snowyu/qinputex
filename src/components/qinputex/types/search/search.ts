@@ -1,5 +1,6 @@
+import { markRaw } from 'vue';
 import { InputType, register } from '../../consts';
-import { InputHistoryItem, QInputHistory } from '../../qinput-history';
+import { InputHistoryItem, QInputHistory } from '../../qinput-history-v2';
 
 function indexOf(that: InputHistoryItem[], aValue: string): number {
 
@@ -26,8 +27,9 @@ export const SearchInput: InputType = {
   props: {
     search(this: any) {
       const value = this.iValue;
-      const vInputHis = this.$attrs['q-input-history'];
-      const vHistory =  vInputHis && vInputHis.history;
+      // In Vue 3, access $attrs from component instance
+      const vInputHis = this.$attrs?.['q-input-history'];
+      const vHistory = vInputHis && vInputHis.history;
       const vPinHistory = vInputHis && vInputHis.pinHistory;
       if (value) {
         if (vHistory && indexOf(vHistory, value) === -1 && (!vPinHistory || indexOf(vPinHistory, value) === -1)) {
@@ -41,17 +43,18 @@ export const SearchInput: InputType = {
   attaches: {
     after: {
       icon: 'search',
-      click(this: InputType) {
-        this.props.search();
+      click(this: any) {
+        // Call the search method from props
+        this.props.search.call(this);
       },
     },
     bottom: {
-      name: QInputHistory,
+      name: markRaw(QInputHistory),
       props: {
         //
       },
       on: {
-        click(text: string, index: number) {
+        click(this: any, text: string, index: number) {
           if (text !== this.iValue) {
             this.iValue = text;
             // this.props.search();
