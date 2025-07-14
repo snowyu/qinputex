@@ -9,6 +9,7 @@
   "es2015": "dist/es2015/components/qinputex/index.js",
   "unpkg": "dist/umd/qinputex.min.js",
   "scripts": {
+    "dev": "quasar dev",
     "prepublishOnly": "npm run build",
     "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
     "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015 && babel dist/es2015 -d dist/es2015",
@@ -36,19 +37,21 @@
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
     "flag-icon-css": "^3.4.5",
-    "lodash.merge": "^4.6.2"
+    "lodash.merge": "^4.6.2",
+    "vue-router": "^4.5.1"
   },
   "peerDependencies": {
-    "quasar": ">=1",
-    "vue": ">=2",
-    "vue-i18n": ">=8.9.0"
+    "quasar": "^2.0.0",
+    "vue": "^3.0.0",
+    "vue-i18n": "^9.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
     "@babel/preset-typescript": "^7.3.3",
-    "@quasar/app": "^1.6.1",
-    "@quasar/extras": "^1.6.1",
+    "@intlify/vite-plugin-vue-i18n": "^7.0.0",
+    "@quasar/app-vite": "^1.0.0",
+    "@quasar/extras": "^1.16.0",
     "@quasar/quasar-app-extension-testing": "^1.0.0",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^1.0.0-beta.10",
     "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.8",
@@ -57,16 +60,19 @@
     "@types/node": "11.9.5",
     "@vue/babel-plugin-transform-vue-jsx": "^1.0.0",
     "@vue/babel-preset-jsx": "^1.1.2",
+    "@vue/compiler-sfc": "^3.3.0",
     "@vue/eslint-config-prettier": "^4.0.0",
+    "autoprefixer": "^10.4.21",
     "babel-eslint": "^10.0.1",
     "date-fns": "^2.8.1",
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^1.0.3",
+    "postcss": "^8.5.6",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
-    "quasar": "^1.9.13",
+    "quasar": "^2.12.0",
     "rollup": "^1.7.0",
     "rollup-plugin-commonjs": "^9.2.1",
     "rollup-plugin-ignore": "^1.0.5",
@@ -78,12 +84,10 @@
     "ts-jest": "^24.0.0",
     "ts-loader": "^5.3.3",
     "tslint": "^5.20.1",
-    "typescript": "^3.4.4",
+    "typescript": "^4.9.5",
     "uglify-js": "^3.5.0",
-    "vue-class-component": "^7.0.1",
-    "vue-i18n": "^8.9.0",
-    "vue-property-decorator": "^8.0.0",
-    "vue-tsx-support": "^2.3.3"
+    "vue": "^3.3.0",
+    "vue-i18n": "^9.2.0"
   },
   "engines": {
     "node": ">= 8.9.0",

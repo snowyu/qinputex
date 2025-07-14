@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QInputEx v2 Test</title>
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/quasar.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <q-layout view="hHh lpR fFf">
+      <q-page-container>
+        <q-page class="q-pa-md">
+          <div class="q-gutter-md" style="max-width: 600px">
+            <h5>QInputEx Component Test - Quasar v2</h5>
+            
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Text Input</div>
+                <q-input-ex v-model="textValue" type="text" label="Text Input"></q-input-ex>
+                <div class="q-mt-sm">Value: {{ textValue }}</div>
+              </q-card-section>
+            </q-card>
+
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Date Input</div>
+                <q-input-ex v-model="dateValue" type="date" label="Date Input"></q-input-ex>
+                <div class="q-mt-sm">Value: {{ dateValue }}</div>
+              </q-card-section>
+            </q-card>
+
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Time Input</div>
+                <q-input-ex v-model="timeValue" type="time" label="Time Input"></q-input-ex>
+                <div class="q-mt-sm">Value: {{ timeValue }}</div>
+              </q-card-section>
+            </q-card>
+
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Password Input</div>
+                <q-input-ex v-model="passwordValue" type="password" label="Password Input"></q-input-ex>
+                <div class="q-mt-sm">Value: {{ passwordValue }}</div>
+              </q-card-section>
+            </q-card>
+
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Color Input</div>
+                <q-input-ex v-model="colorValue" type="color" label="Color Input"></q-input-ex>
+                <div class="q-mt-sm">Value: {{ colorValue }}</div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-page>
+      </q-page-container>
+    </q-layout>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.3.0/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/quasar.umd.js"></script>
+  <script type="module">
+    // Import the component (you'll need to build it first)
+    // For now, let's create a simple mock
+    const { createApp, ref } = Vue;
+    const { Quasar } = window.Quasar;
+
+    const app = createApp({
+      setup() {
+        const textValue = ref('');
+        const dateValue = ref('');
+        const timeValue = ref('');
+        const passwordValue = ref('');
+        const colorValue = ref('#42b983');
+
+        return {
+          textValue,
+          dateValue,
+          timeValue,
+          passwordValue,
+          colorValue
+        };
+      }
+    });
+
+    app.use(Quasar);
+    app.mount('#app');
+  </script>
+</body>
+</html>
