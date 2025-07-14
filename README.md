@@ -23,6 +23,20 @@ An advanced input component for Quasar Framework v2 that provides enhanced input
 
 ## Installation
 
+### As a Quasar App Extension (Recommended)
+
+```bash
+quasar ext add qinputex
+```
+
+This will handle all the setup automatically, including:
+- Installing the npm package
+- Registering components globally
+- Adding necessary boot files
+- Configuring your project
+
+### Manual Installation
+
 ```bash
 npm install qinputex
 # or

@@ -4,14 +4,23 @@
   "description": "An Advance QInput for Quasar",
   "productName": "QInputEx",
   "author": "Riceball LEE <snowyu.lee@gmail.com>",
-  "main": "dist/umd/qinputex.js",
-  "module": "dist/esm/components/qinputex/index.js",
-  "es2015": "dist/es2015/components/qinputex/index.js",
-  "unpkg": "dist/umd/qinputex.min.js",
+  "main": "dist/qinputex.umd.js",
+  "module": "dist/qinputex.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qinputex.esm.js",
+      "require": "./dist/qinputex.umd.js"
+    },
+    "./src/*": "./src/*"
+  },
+  "types": "dist/types/index.d.ts",
+  "unpkg": "dist/qinputex.umd.js",
   "scripts": {
     "dev": "quasar dev",
     "prepublishOnly": "npm run build",
-    "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
+    "build": "node build/index.js",
+    "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
+    "build:legacy": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
     "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015 && babel dist/es2015 -d dist/es2015",
     "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm && babel dist/esm -d dist/esm",
     "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs && babel dist/cjs -d dist/cjs",

@@ -1,0 +1,39 @@
+{
+  "name": "quasar-app-extension-qinputex",
+  "version": "2.0.0",
+  "description": "QInputEx - Advanced Input Component for Quasar Framework v2",
+  "author": "Riceball LEE <snowyu.lee@gmail.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": "https://github.com/snowyu/qinputex/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowyu/qinputex.git"
+  },
+  "homepage": "https://github.com/snowyu/qinputex",
+  "dependencies": {
+    "qinputex": "^2.0.0"
+  },
+  "peerDependencies": {
+    "quasar": "^2.0.0"
+  },
+  "engines": {
+    "node": ">= 14"
+  },
+  "keywords": [
+    "quasar",
+    "quasar-app-extension",
+    "quasar-v2",
+    "input",
+    "date",
+    "time",
+    "datetime",
+    "color",
+    "password",
+    "search",
+    "qinputex"
+  ]
+}
