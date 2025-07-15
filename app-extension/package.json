@@ -1,0 +1,17 @@
+{
+  "name": "quasar-app-extension-qinputex",
+  "version": "0.0.1",
+  "description": "QInputEx Component Extension",
+  "author": "Riceball LEE <snowyu.lee@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "quasar-ui-qinputex": "^0.0.1",
+    "@quasar/app-vite": "^2.0.0"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  }
+}

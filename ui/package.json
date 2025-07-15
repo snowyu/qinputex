@@ -1,0 +1,51 @@
+{
+  "name": "quasar-ui-qinputex",
+  "version": "0.0.1",
+  "author": "Riceball LEE <snowyu.lee@gmail.com>",
+  "description": "Quasar UI component for an advanced text input with various input types and customizable attachments.",
+  "license": "MIT",
+  "module": "dist/index.es.js",
+  "main": "dist/index.umd.js",
+  "scripts": {
+    "dev": "cd dev && quasar dev && cd ..",
+    "dev:umd": "yarn build && open umd-test.html",
+    "dev:ssr": "cd dev && quasar dev -m ssr && cd ..",
+    "dev:ios": "cd dev && quasar dev -m ios && cd ..",
+    "dev:android": "cd dev && quasar dev -m android && cd ..",
+    "dev:electron": "cd dev && quasar dev -m electron && cd ..",
+    "build": "node sync-app-ext.js && vite build"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^2.2.1",
+    "@quasar/extras": "^1.17.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "autoprefixer": "^10.4.21",
+    "chalk": "^5.4.1",
+    "cssnano": "^7.0.7",
+    "fs-extra": "^11.3.0",
+    "open": "^10.1.2",
+    "postcss": "^8.5.6",
+    "quasar": "^2.18.1",
+    "rimraf": "^6.0.1",
+    "rtlcss": "^4.3.0",
+    "sass": "^1.89.2",
+    "typescript": "^5.8.3",
+    "vite": "^5.3.3",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "browserslist": [
+    "last 4 Chrome versions",
+    "last 4 Firefox versions",
+    "last 2 Edge versions",
+    "last 4 Safari versions",
+    "last 4 Android versions",
+    "last 4 ChromeAndroid versions",
+    "last 4 FirefoxAndroid versions",
+    "last 4 iOS versions"
+  ],
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "lodash.merge": "^4.6.2"
+  }
+}
